@@ -1,37 +1,21 @@
-# Bili-Music
+# Fairy-Music
 
 #### 介绍
-Music for Bilibili
+自由的音乐播放器 `FairyMusic` (简称`fm` /狗头)
 
-#### 软件架构
-软件架构说明
+#### 项目起因
 
+突然想听《缘分一道桥》就去网易云搜来听, 然后就发再会员过期了. 当时, 就觉得巨tm恶心...
 
-#### 安装教程
+好多歌网易云没有版权, 也很让我难受...
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+正好, 我最近想系统学一下前端的相关知识
 
-#### 使用说明
+所以, 就想着用前端技术, 做一个B站音乐播放器, 然后, 顺便解决一下我听歌的痛点...
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+#### 项目目标
 
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
-
-
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+1. 登录
+2. 检索
+3. 播放
+4. 收藏
