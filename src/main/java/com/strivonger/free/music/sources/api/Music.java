@@ -1,6 +1,7 @@
-package com.strivonger.free.music.api;
+package com.strivonger.free.music.sources.api;
 
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * @author Mr.Lee
@@ -13,10 +14,11 @@ public interface Music {
 
     /**
      * 转换成可播放音频数地址
-     * @param url
+     * @param url 可播放的流媒体地址
+     * @param store 存储流媒体文件的函数
      * @return
      */
-    String convert(String url);
+    String convert(String url, Function<String, Boolean> store);
 
     /**
      * 搜索得到列表
