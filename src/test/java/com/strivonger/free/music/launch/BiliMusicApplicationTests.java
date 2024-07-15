@@ -1,6 +1,8 @@
 package com.strivonger.free.music.launch;
 
 import cn.hutool.http.HttpUtil;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.striveonger.common.core.utils.JacksonUtils;
 import org.jsoup.Jsoup;
@@ -26,9 +28,18 @@ public class BiliMusicApplicationTests {
 				break;
 			}
 		}
-		if (Objects.nonNull(root)) {
+		if (Objects.isNull(root)) {
 			System.out.println(root);
+			return;
 		}
+
+		JsonNode node = root.get("data").get("dash").get("audio");
+		if (node instanceof ArrayNode array) {
+			for (JsonNode o : array) {
+				System.out.println(o.get("baseUrl").asText());
+			}
+		}
+
 
 	}
 

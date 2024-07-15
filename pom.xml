@@ -51,10 +51,8 @@
 		<!-- Hutool 的依赖配置-->
 		<dependency>
 			<groupId>cn.hutool</groupId>
-			<artifactId>hutool-bom</artifactId>
+			<artifactId>hutool-all</artifactId>
 			<version>${hutool.version}</version>
-			<type>pom</type>
-			<scope>import</scope>
 		</dependency>
 
 		<!--Sa Token 配置-->
