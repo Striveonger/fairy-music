@@ -5,9 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = { "com.strivonger" })
-// @MapperScan("com.strivonger.common.*.mapper")
+@ComponentScan(basePackages = { "com.strivonger.**" })
 public class AppLaunch {
+
 	public static void main(String[] args) {
 		SpringApplication.run(AppLaunch.class, args);
 	}
