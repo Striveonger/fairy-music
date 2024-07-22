@@ -9,15 +9,17 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.util.Objects;
+
 
 public class BiliMusicApplicationTests {
 
 	@Test
-	public void test() {
-		String html = HttpUtil.get("https://www.bilibili.com/video/BV11u4y1x71G/");
+	public void analyze() {
+		String html = HttpUtil.get("https://www.bilibili.com/video/BV1gK411p7L8/");
+		System.out.println(html);
 		Document document = Jsoup.parse(html);
 		Elements scripts = document.select("script");
 		ObjectNode root = null;
@@ -42,5 +44,4 @@ public class BiliMusicApplicationTests {
 
 
 	}
-
 }
