@@ -1,65 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.1</version>
-		<relativePath/>
-	</parent>
-	<groupId>com.strivonger.music</groupId>
-	<artifactId>fairy-music</artifactId>
-	<version>1.0.0</version>
-	<name>fairy-music</name>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.1</version>
+        <relativePath />
+    </parent>
+    <groupId>com.strivonger.music</groupId>
+    <artifactId>fairy-music</artifactId>
+    <version>1.0.0</version>
+    <name>fairy-music</name>
 
-	<description>Fairy Music</description>
+    <description>Fairy Music</description>
 
-	<properties>
-		<!-- Ground Work -->
-		<java.version>17</java.version>
-		<maven.compiler.source>17</maven.compiler.source>
-		<maven.compiler.target>17</maven.compiler.target>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <properties>
+        <!-- Ground Work -->
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<own-commons.version>1.0.0</own-commons.version>
-		<hutool.version>5.8.29</hutool.version>
-		<jsoup.version>1.17.2</jsoup.version>
+        <own-commons.version>1.0.0</own-commons.version>
+        <hutool.version>5.8.29</hutool.version>
+        <jsoup.version>1.17.2</jsoup.version>
 
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>com.striveonger.common</groupId>
+            <artifactId>own-common-user</artifactId>
+            <version>${own-commons.version}</version>
+        </dependency>
 
-	</properties>
-	<dependencies>
+        <!-- Hutool 的依赖配置-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
 
-		<dependency>
-			<groupId>com.striveonger.common</groupId>
-			<artifactId>own-commons-user</artifactId>
-			<version>${own-commons.version}</version>
-		</dependency>
+        <!-- Jsoup -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
+        </dependency>
 
-		<!-- Hutool 的依赖配置-->
-		<dependency>
-			<groupId>cn.hutool</groupId>
-			<artifactId>hutool-all</artifactId>
-			<version>${hutool.version}</version>
-		</dependency>
+    </dependencies>
 
-		<!-- Jsoup -->
-		<dependency>
-			<groupId>org.jsoup</groupId>
-			<artifactId>jsoup</artifactId>
-			<version>${jsoup.version}</version>
-		</dependency>
-
-	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

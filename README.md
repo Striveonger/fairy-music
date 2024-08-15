@@ -20,3 +20,11 @@
 2. 检索
 3. 播放
 4. 收藏
+
+#### 技术栈
+1. server: springboot3 + mybatis-flex
+2. web: vue3 + naive-ui
+3. database: mysql, version control: flyway
+4. ci-cd: helm + jenkins
+5. env: kubernetes + containerd + harbor + ansible
+

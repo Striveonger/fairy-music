@@ -26,7 +26,7 @@ public class BiliMusicApplicationTests {
 		for (Element script : scripts) {
 			String text = script.html();
 			if (text.startsWith("window.__playinfo__=")) {
-				root = JacksonUtils.readObjectNode(text.substring(20));
+				root = JacksonUtils.toObjectNode(text.substring(20));
 				break;
 			}
 		}
