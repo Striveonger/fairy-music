@@ -38,5 +38,6 @@ sa-token:
 
 own:
   auth:
-    whitelist:
+    whites:
       - '/test/hi'
+      - '/fairy/music/test/**'

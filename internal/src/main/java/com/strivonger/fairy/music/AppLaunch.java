@@ -1,4 +1,4 @@
-package com.strivonger.free.music;
+package com.strivonger.fairy.music;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

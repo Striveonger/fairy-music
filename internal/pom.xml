@@ -36,12 +36,12 @@
             <version>${own-commons.version}</version>
         </dependency>
 
-        <!-- Hutool 的依赖配置-->
         <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-            <version>${hutool.version}</version>
+            <groupId>com.striveonger.common</groupId>
+            <artifactId>own-common-leaf</artifactId>
+            <version>${own-commons.version}</version>
         </dependency>
+
 
         <!-- Jsoup -->
         <dependency>
