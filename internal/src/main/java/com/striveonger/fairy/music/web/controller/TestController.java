@@ -1,8 +1,7 @@
-package com.strivonger.fairy.music.web.controller;
+package com.striveonger.fairy.music.web.controller;
 
 import cn.hutool.core.lang.Dict;
 import com.striveonger.common.core.result.Result;
-import com.striveonger.common.leaf.core.ID;
 import com.striveonger.common.leaf.core.IDGen;
 import com.striveonger.common.leaf.service.AllocService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,17 +24,9 @@ public class TestController {
     @Resource
     private IDGen fitIDGen;
 
-    @Resource
-    private AllocService allocService;
-
     @RequestMapping("/hello")
     public Result hello() {
         log.info("hello");
-        allocService.registerTag("A", "测试注册Tag");
-        ID id = fitIDGen.next("A");
-        log.info("fit id by tag A: {}", id);
-        return Result.success().message("Hello World!").data(Dict.of("id", id));
+        return Result.success().message("Hello World!").data(Dict.of("segment", fitIDGen.next("A")).set("snowflake", fitIDGen.next()));
     }
-
-
 }

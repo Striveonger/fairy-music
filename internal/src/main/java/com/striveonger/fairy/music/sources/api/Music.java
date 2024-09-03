@@ -1,4 +1,4 @@
-package com.strivonger.fairy.music.sources.api;
+package com.striveonger.fairy.music.sources.api;
 
 import java.util.List;
 import java.util.function.Function;

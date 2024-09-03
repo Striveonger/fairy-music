@@ -9,7 +9,7 @@
         <version>3.3.1</version>
         <relativePath />
     </parent>
-    <groupId>com.strivonger.music</groupId>
+    <groupId>com.striveonger.music</groupId>
     <artifactId>fairy-music</artifactId>
     <version>1.0.0</version>
     <name>fairy-music</name>
@@ -24,24 +24,24 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <own-commons.version>1.0.0</own-commons.version>
+        <own.version>1.0.0</own.version>
         <hutool.version>5.8.29</hutool.version>
         <jsoup.version>1.17.2</jsoup.version>
 
     </properties>
     <dependencies>
+
         <dependency>
             <groupId>com.striveonger.common</groupId>
-            <artifactId>own-common-user</artifactId>
-            <version>${own-commons.version}</version>
+            <artifactId>own-user</artifactId>
+            <version>${own.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.striveonger.common</groupId>
-            <artifactId>own-common-leaf</artifactId>
-            <version>${own-commons.version}</version>
+            <artifactId>own-leaf</artifactId>
+            <version>${own.version}</version>
         </dependency>
-
 
         <!-- Jsoup -->
         <dependency>
@@ -51,7 +51,6 @@
         </dependency>
 
     </dependencies>
-
     <build>
         <plugins>
             <plugin>

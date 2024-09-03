@@ -1,4 +1,4 @@
-package com.strivonger.fairy.music.launch;
+package com.striveonger.fairy.music.launch;
 
 import cn.hutool.http.HttpUtil;
 import com.fasterxml.jackson.databind.JsonNode;
