@@ -1,9 +1,8 @@
-package com.striveonger.fairy.music.web.controller;
+package com.striveonger.music.fairy.web.controller;
 
 import cn.hutool.core.lang.Dict;
 import com.striveonger.common.core.result.Result;
 import com.striveonger.common.leaf.core.IDGen;
-import com.striveonger.common.leaf.service.AllocService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;

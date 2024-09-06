@@ -1,4 +1,4 @@
-package com.striveonger.fairy.music.launch;
+package com.striveonger.music.fairy.launch;
 
 import cn.hutool.http.HttpUtil;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -19,7 +19,7 @@ public class BiliMusicApplicationTests {
     @Test
     public void analyze() {
         String html = HttpUtil.get("https://www.bilibili.com/video/BV1gK411p7L8/");
-        System.out.println(html);
+        // System.out.println(html);
         Document document = Jsoup.parse(html);
         Elements scripts = document.select("script");
         ObjectNode root = null;
@@ -41,7 +41,5 @@ public class BiliMusicApplicationTests {
                 System.out.println(o.get("baseUrl").asText());
             }
         }
-
-
     }
 }

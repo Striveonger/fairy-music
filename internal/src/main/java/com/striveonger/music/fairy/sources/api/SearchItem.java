@@ -1,4 +1,4 @@
-package com.striveonger.fairy.music.sources.api;
+package com.striveonger.music.fairy.sources.api;
 
 /**
  * @author Mr.Lee

@@ -37,6 +37,8 @@ sa-token:
   is-log: false
 
 own:
+  leaf:
+    worker-id: 2
   auth:
     whites:
       - '/test/hi'

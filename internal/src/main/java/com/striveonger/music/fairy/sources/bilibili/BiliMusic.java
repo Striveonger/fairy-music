@@ -1,12 +1,12 @@
-package com.striveonger.fairy.music.sources.bilibili;
+package com.striveonger.music.fairy.sources.bilibili;
 
 import cn.hutool.http.HttpUtil;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.striveonger.common.core.constant.ResultStatus;
 import com.striveonger.common.core.exception.CustomException;
 import com.striveonger.common.core.utils.JacksonUtils;
-import com.striveonger.fairy.music.sources.api.Music;
-import com.striveonger.fairy.music.sources.api.SearchItem;
+import com.striveonger.music.fairy.sources.api.Music;
+import com.striveonger.music.fairy.sources.api.SearchItem;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

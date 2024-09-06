@@ -3,15 +3,18 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.1</version>
+        <groupId>com.striveonger.common</groupId>
+        <artifactId>own-parent</artifactId>
+        <version>1.0.0</version>
         <relativePath />
     </parent>
+
     <groupId>com.striveonger.music</groupId>
     <artifactId>fairy-music</artifactId>
     <version>1.0.0</version>
+    <packaging>jar</packaging>
     <name>fairy-music</name>
 
     <description>Fairy Music</description>
@@ -25,22 +28,22 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <own.version>1.0.0</own.version>
-        <hutool.version>5.8.29</hutool.version>
         <jsoup.version>1.17.2</jsoup.version>
-
     </properties>
-    <dependencies>
 
+    <dependencies>
         <dependency>
             <groupId>com.striveonger.common</groupId>
             <artifactId>own-user</artifactId>
-            <version>${own.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.striveonger.common</groupId>
             <artifactId>own-leaf</artifactId>
-            <version>${own.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-runner</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <!-- Jsoup -->
@@ -51,11 +54,19 @@
         </dependency>
 
     </dependencies>
+
     <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
