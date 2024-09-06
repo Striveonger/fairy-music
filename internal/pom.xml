@@ -41,9 +41,8 @@
             <artifactId>own-leaf</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-runner</artifactId>
-            <scope>test</scope>
+            <groupId>com.striveonger.common</groupId>
+            <artifactId>own-test</artifactId>
         </dependency>
 
         <!-- Jsoup -->
