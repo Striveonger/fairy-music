@@ -3,18 +3,20 @@ package com.striveonger.music.fairy.launch;
 import cn.hutool.core.lang.Pair;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
-import cn.hutool.http.HttpUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.striveonger.common.core.utils.JacksonUtils;
+import com.striveonger.common.core.Jackson;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 
 public class BiliMusicApplicationTests {
@@ -29,7 +31,7 @@ public class BiliMusicApplicationTests {
         for (Element script : scripts) {
             String text = script.html();
             if (text.startsWith("window.__playinfo__=")) {
-                root = JacksonUtils.toObjectNode(text.substring(20));
+                root = Jackson.toObjectNode(text.substring(20));
                 break;
             }
         }
