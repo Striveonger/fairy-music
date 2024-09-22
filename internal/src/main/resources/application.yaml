@@ -44,6 +44,13 @@ own:
   storage:
     file:
       folder: '/Users/striveonger/development/workspace/temp/fairy-music-storage'
+    minio:
+      endpoint: '10.13.144.121'
+      port: 9000
+      secure: false
+      access-key: 'BSIgjjn67zEEAoB5rCGG'
+      secret-key: 'RuIvDSXRgsiMa9vtgDebTP2fq8bPjMCTUhIAcQxR'
+      bucket: 'fairy-music-storage'
   leaf:
     worker-id: 2
   auth:

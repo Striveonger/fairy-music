@@ -6,7 +6,9 @@ import cn.hutool.http.HttpResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.striveonger.common.core.Command;
 import com.striveonger.common.core.Jackson;
+import com.striveonger.common.core.Timepiece;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -74,5 +76,16 @@ public class BiliMusicApplicationTests {
         // System.out.println(JacksonUtils.toJSONString(headers));
 
 
+    }
+
+
+    @Test
+    public void lux() {
+        Timepiece timepiece = Timepiece.of("RunCommand");
+        Command.Result result = Command.of("lux -j https://www.bilibili.com/video/BV1wJ4m1a7tX").run();
+        String content = result.getContent();
+        JsonNode node = Jackson.toJsonNode(content);
+        System.out.println(node);
+        timepiece.show();
     }
 }
