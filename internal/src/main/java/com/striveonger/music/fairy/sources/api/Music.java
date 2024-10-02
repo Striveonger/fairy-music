@@ -1,5 +1,7 @@
 package com.striveonger.music.fairy.sources.api;
 
+import com.striveonger.common.core.vo.BasicSearchVo;
+
 import java.util.List;
 import java.util.function.Function;
 
@@ -18,11 +20,15 @@ public interface Music {
      * @param store 存储流媒体文件的函数
      * @return
      */
-    String convert(String url, Function<String, Boolean> store);
+    String convert(String url, Function<byte[], Boolean> store);
 
     /**
      * 搜索得到列表
      */
-    List<SearchItem> search(String keyword);
+    List<SearchItem> search(String keyword, int page);
+
+    default List<SearchItem> search(String keyword) {
+        return search(keyword, 1);
+    }
 
 }

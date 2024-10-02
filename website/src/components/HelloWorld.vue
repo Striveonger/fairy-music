@@ -82,7 +82,7 @@ let arr: Ref<Array<Car>> = toRef([
 
 // arr.value.push(car.value);
 
-// console.log('arr :>> ', arr);
+console.log('arr :>> ', arr);
 
 </script>
 

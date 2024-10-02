@@ -1,23 +1,24 @@
 package com.striveonger.music.fairy.launch;
 
-import cn.hutool.core.lang.Pair;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
+import cn.hutool.http.HttpUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.striveonger.common.core.Command;
 import com.striveonger.common.core.Jackson;
 import com.striveonger.common.core.Timepiece;
+import com.striveonger.music.fairy.sources.api.Music;
+import com.striveonger.music.fairy.sources.api.SearchItem;
+import com.striveonger.music.fairy.sources.bilibili.BiliMusic;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.Test;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 
@@ -25,9 +26,10 @@ public class BiliMusicApplicationTests {
 
     @Test
     public void analyze() {
-        HttpResponse response = HttpRequest.get("https://www.bilibili.com/video/BV1gK411p7L8/").execute();
+        HttpResponse response = HttpRequest.get("https://www.bilibili.com/video/BV1wJ4m1a7tX/").execute();
+        String html = response.body();
         // System.out.println(html);
-        Document document = Jsoup.parse(response.body());
+        Document document = Jsoup.parse(html);
         Elements scripts = document.select("script");
         ObjectNode root = null;
         for (Element script : scripts) {
@@ -41,22 +43,7 @@ public class BiliMusicApplicationTests {
             return;
         }
 
-        List<Pair<String, String>> keys = List.of(
-                Pair.of("Transfer-Encoding", "Transfer-Encoding"),
-                Pair.of("X-Cache-Webcdn", "X-Cache-Webcdn"),
-                Pair.of("Content-Encoding", "Content-Encoding"),
-                Pair.of("Connection", "Connection"),
-                Pair.of("IDC", "IDC"),
-                Pair.of("Vary", "Vary"),
-                Pair.of("Set-Cookie", "Cookie"),
-                Pair.of("server-timing", "server-timing"),
-                Pair.of("gear", "gear"));
-
-        Map<String, List<String>> headers = new HashMap<>();
-        for (Pair<String, String> key : keys) {
-            headers.put(key.getValue(), List.of(response.header(key.getKey())));
-        }
-
+        System.out.println(root);
         String targetUrl = null;
         JsonNode node = root.get("data").get("dash").get("audio");
         if (node instanceof ArrayNode array) {
@@ -65,19 +52,28 @@ public class BiliMusicApplicationTests {
                 System.out.println(targetUrl);
             }
         }
-        if (Objects.isNull(targetUrl)) {
-            return;
-        }
-
-        HttpResponse httpResponse = HttpRequest.get(targetUrl).header(headers).execute();
-        System.out.println(httpResponse.isOk());
-
-
-        // System.out.println(JacksonUtils.toJSONString(headers));
-
-
     }
 
+    @Test
+    public void analyze2() {
+        String url = "https://www.bilibili.com/video/BV1wJ4m1a7tX/";
+        // String url = "https://www.bilibili.com/video/BV1vf421i7hV/";
+        HttpResponse response = HttpRequest.get(url).execute();
+        String html = response.body();
+        // System.out.println(html);
+
+        Document document = Jsoup.parse(html);
+        Elements scripts = document.select("script");
+        ObjectNode root = null;
+        for (Element script : scripts) {
+            String text = script.html();
+            if (text.startsWith("window.__INITIAL_STATE__=")) {
+                root = Jackson.toObjectNode(text.substring(25, text.indexOf(";")));
+                break;
+            }
+        }
+        System.out.println(root);
+    }
 
     @Test
     public void lux() {
@@ -88,4 +84,18 @@ public class BiliMusicApplicationTests {
         System.out.println(node);
         timepiece.show();
     }
+
+    @Test
+    public void search() {
+        String keyword = "小幸运";
+        int page = 1;
+
+        Timepiece timepiece = Timepiece.of("SearchMusic");
+        Music music = new BiliMusic();
+        List<SearchItem> list = music.search(keyword, page);
+        System.out.println(Jackson.toJSONString(list));
+        timepiece.show();
+    }
+
+
 }

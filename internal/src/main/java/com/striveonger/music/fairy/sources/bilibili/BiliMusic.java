@@ -2,9 +2,11 @@ package com.striveonger.music.fairy.sources.bilibili;
 
 import cn.hutool.http.HttpUtil;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.striveonger.common.core.Jackson;
+import com.striveonger.common.core.Timepiece;
 import com.striveonger.common.core.constant.ResultStatus;
 import com.striveonger.common.core.exception.CustomException;
-import com.striveonger.common.core.utils.JacksonUtils;
+import com.striveonger.common.core.vo.BasicSearchVo;
 import com.striveonger.music.fairy.sources.api.Music;
 import com.striveonger.music.fairy.sources.api.SearchItem;
 import org.jsoup.Jsoup;
@@ -28,11 +30,11 @@ public class BiliMusic implements Music {
 
     @Override
     public String type() {
-        return "Bilibili";
+        return "bilibili";
     }
 
     @Override
-    public String convert(String url, Function<String, Boolean> store) {
+    public String convert(String url, Function<byte[], Boolean> store) {
         // 1. 请求路径
         String html = HttpUtil.get(url);
         Document document = Jsoup.parse(html);
@@ -41,7 +43,7 @@ public class BiliMusic implements Music {
         for (Element script : scripts) {
             String text = script.html();
             if (text.startsWith("window.__playinfo__=")) {
-                root = JacksonUtils.toObjectNode(text.substring(20));
+                root = Jackson.toObjectNode(text.substring(20));
                 break;
             }
         }
@@ -53,16 +55,42 @@ public class BiliMusic implements Music {
         }
 
 
-
         // 异步执行存储逻辑
-
 
 
         return "";
     }
 
     @Override
-    public List<SearchItem> search(String keyword) {
-        return List.of();
+    public List<SearchItem> search(String keyword, int page) {
+        String url = "https://search.bilibili.com/all?keyword=" + keyword;
+        if (page > 1) {
+            url += "&page=" + page;
+        }
+        Timepiece timepiece = Timepiece.of("Query Bilibili Music Search");
+        String html = HttpUtil.get(url);
+        timepiece.keep("Http Request");
+        Document document = Jsoup.parse(html);
+        timepiece.keep("Html Parse");
+        Elements elements = document.select("div.video.i_wrapper.search-all-list > div > div");
+        timepiece.keep("Elements Select");
+        List<SearchItem> list = elements.stream().map(this::convert).filter(Objects::nonNull).toList();
+        timepiece.keep("Convert Result");
+        timepiece.show();
+        log.info("Bilibili Music search result: {}", list);
+        return list;
+    }
+
+    private SearchItem convert(Element element) {
+        Element a = element.select(".bili-video-card__wrap > a").first(), img;
+        if (a == null || (img = a.select("img").first()) == null) {
+            return null;
+        }
+        SearchItem item = new SearchItem();
+        item.setUrl(a.attr("href"));
+        item.setCover(img.attr("src"));
+        item.setTitle(img.attr("alt"));
+        item.setType(type());
+        return item;
     }
 }
