@@ -23,7 +23,7 @@
 
 #### 技术栈
 1. server: springboot3 + mybatis-flex
-2. web: vue3 + naive-ui
+2. web: vue3 + bootstrap5
 3. database: mysql, version control: flyway
 4. ci-cd: helm + jenkins
 5. env: kubernetes + containerd + harbor + ansible

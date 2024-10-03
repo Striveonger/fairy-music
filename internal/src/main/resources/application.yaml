@@ -1,5 +1,8 @@
 server:
   port: 18081
+  servlet:
+    context-path: '/api'
+
 
 spring:
   application:
@@ -55,5 +58,5 @@ own:
     worker-id: 2
   auth:
     whites:
-      - '/fairy/music/test/**'
+      - '/api/v1/**'
       - '/storage/**'

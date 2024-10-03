@@ -54,7 +54,6 @@ public class BiliMusic implements Music {
             throw new CustomException(ResultStatus.ANALYZE_CONTENT_FAIL, "Bilibili Music analyze playinfo error");
         }
 
-
         // 异步执行存储逻辑
 
 
@@ -87,8 +86,8 @@ public class BiliMusic implements Music {
             return null;
         }
         SearchItem item = new SearchItem();
-        item.setUrl(a.attr("href"));
-        item.setCover(img.attr("src"));
+        item.setUrl("https:" + a.attr("href"));
+        item.setCover("https:" + img.attr("src"));
         item.setTitle(img.attr("alt"));
         item.setType(type());
         return item;

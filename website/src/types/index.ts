@@ -9,3 +9,21 @@ export interface Car {
     updateTime?: DateTime // 改款时间
 }
 
+export interface SearchItem {
+    /**
+     * 标题
+     */
+    title: string,
+    /**
+     * 封面
+     */
+    cover: string,
+    /**
+     * 播放地址
+     */
+    url: string,
+    /**
+     * 类型
+     */
+    type: string
+}
