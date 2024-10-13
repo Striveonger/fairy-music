@@ -19,7 +19,10 @@ import org.jsoup.select.Elements;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 
 public class BiliMusicApplicationTests {
@@ -57,7 +60,8 @@ public class BiliMusicApplicationTests {
     @Test
     public void analyze2() {
         String url = "https://www.bilibili.com/video/BV1wJ4m1a7tX/";
-        // String url = "https://www.bilibili.com/video/BV1vf421i7hV/";
+        // String url = "https://www.bilibili.com/video/BV1Af421X7Kg/";
+        // String url = "https://www.bilibili.com/video/BV1bb411N77n/";
         HttpResponse response = HttpRequest.get(url).execute();
         String html = response.body();
         // System.out.println(html);
@@ -68,7 +72,8 @@ public class BiliMusicApplicationTests {
         for (Element script : scripts) {
             String text = script.html();
             if (text.startsWith("window.__INITIAL_STATE__=")) {
-                root = Jackson.toObjectNode(text.substring(25, text.indexOf(";")));
+                String s = text.substring(25, text.lastIndexOf("};")) + "}";
+                root = Jackson.toObjectNode(s);
                 break;
             }
         }
@@ -96,6 +101,32 @@ public class BiliMusicApplicationTests {
         System.out.println(Jackson.toJSONString(list));
         timepiece.show();
     }
+
+
+
+    @Test
+    public void play() {
+        String url = "https://api.bilibili.com/x/player/playurl?avid=34738621&cid=60824473&bvid=BV1bb411N77n&qn=127&type=&otype=json&fourk=1&fnver=0&fnval=2000";
+        Map<String, List<String>> headers = Map.of(
+                "Accept", List.of("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"),
+                "Accept-Charset", List.of("UTF-8,*;q=0.5"),
+                "Accept-Encoding", List.of("gzip,deflate,sdch"),
+                "Accept-Language", List.of("en-US,en;q=0.8"),
+                "Referer", List.of("https://www.bilibili.com"),
+                "User-Agent", List.of("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36")
+        );
+        HttpResponse result = HttpRequest.get(url).header(headers, true).execute();
+        byte[] bytes = result.bodyBytes();
+        JsonNode node = Jackson.toJsonNode(new String(bytes, UTF_8));
+        System.out.println(node);
+
+        url = "https://xy125x38x8x69xy2408y8610y3b10y1300yy105xy.mcdn.bilivideo.cn:4483/upgcxcode/73/44/60824473/60824473-1-30280.m4s?e=ig8euxZM2rNcNbdlhoNvNC8BqJIzNbfqXBvEqxTEto8BTrNvN0GvT90W5JZMkX_YN0MvXg8gNEV4NC8xNEV4N03eN0B5tZlqNxTEto8BTrNvNeZVuJ10Kj_g2UB02J0mN0B5tZlqNCNEto8BTrNvNC7MTX502C8f2jmMQJ6mqF2fka1mqx6gqj0eN0B599M=&uipk=5&nbs=1&deadline=1728801769&gen=playurlv2&os=mcdn&oi=0&trid=00000bf1207e04dd47ce925f3182577494c0u&mid=0&platform=pc&og=cos&upsig=6294e68b6f980046380a703cb7d71a7b&uparams=e,uipk,nbs,deadline,gen,os,oi,trid,mid,platform,og&mcdnid=16000167&bvc=vod&nettype=0&orderid=0,3&buvid=&build=0&f=u_0_0&agrr=0&bw=16203&logo=A0008000";
+        result = HttpRequest.get(url).header(headers, true).execute();
+        System.out.println(result.isOk());
+
+
+    }
+
 
 
 }

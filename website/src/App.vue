@@ -1,11 +1,12 @@
 <template>
     <!-- <MusicPlayer /> -->
-    <SearchMusic />
+    <!-- <SearchMusic /> -->
+    <router-view />
 </template>
 
 <script setup lang="ts">
 // import MusicPlayer from './components/MusicPlayer.vue'
-import SearchMusic from './views/SearchMusic.vue';
+// import SearchMusic from './views/SearchMusic.vue';
 </script>
 
 <style scoped>

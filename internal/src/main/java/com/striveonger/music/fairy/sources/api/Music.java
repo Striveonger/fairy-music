@@ -1,9 +1,6 @@
 package com.striveonger.music.fairy.sources.api;
 
-import com.striveonger.common.core.vo.BasicSearchVo;
-
 import java.util.List;
-import java.util.function.Function;
 
 /**
  * @author Mr.Lee
@@ -15,12 +12,14 @@ public interface Music {
     String type();
 
     /**
-     * 转换成可播放音频数地址
+     * 转换成可播放音频的对象
+     *
      * @param url 可播放的流媒体地址
-     * @param store 存储流媒体文件的函数
      * @return
      */
-    String convert(String url, Function<byte[], Boolean> store);
+    <T extends Play> List<T> convert(String url);
+
+    <T extends Play> byte[] play(T play);
 
     /**
      * 搜索得到列表

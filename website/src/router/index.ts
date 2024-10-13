@@ -1,14 +1,25 @@
-import { createMemoryHistory, createRouter } from 'vue-router';
+import { createWebHistory, createRouter } from 'vue-router';
 
-import SearchMusic from '../views/SearchMusic.vue';
-import PlayMusic from '../views/PlayMusic.vue';
-
+import SearchMusic from '@/views/SearchMusic.vue';
+import PlayMusic from '@/views/PlayMusic.vue';
 
 const routes = [
-    { path: '/', component: SearchMusic },
-    { path: '/play', component: PlayMusic },
-]
+    {
+        path: '/',
+        name: 'search',
+        component: SearchMusic
+    },
+    {
+        path: '/play/:url',
+        name: 'play',
+        component: PlayMusic
+    }
+];
+
 const router = createRouter({
-    history: createMemoryHistory(),
+    // history: createMemoryHistory(),
+    history: createWebHistory(),
     routes,
-})
+});
+
+export default router;

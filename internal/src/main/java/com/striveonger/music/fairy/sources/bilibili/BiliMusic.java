@@ -33,32 +33,16 @@ public class BiliMusic implements Music {
         return "bilibili";
     }
 
+    // https://www.bilibili.com/v/popular/music
+
     @Override
-    public String convert(String url, Function<byte[], Boolean> store) {
-        // 1. 请求路径
-        String html = HttpUtil.get(url);
-        Document document = Jsoup.parse(html);
-        Elements scripts = document.select("script");
-        ObjectNode root = null;
-        for (Element script : scripts) {
-            String text = script.html();
-            if (text.startsWith("window.__playinfo__=")) {
-                root = Jackson.toObjectNode(text.substring(20));
-                break;
-            }
-        }
+    public List<BilibiliPlay> convert(String url) {
+        Timepiece timepiece = Timepiece.of("Query Bilibili Music Play");
 
-        // 2. 解析数据
-        if (Objects.isNull(root)) {
-            log.error("Bilibili Music analyze playinfo error: {}", ResultStatus.ANALYZE_CONTENT_FAIL);
-            throw new CustomException(ResultStatus.ANALYZE_CONTENT_FAIL, "Bilibili Music analyze playinfo error");
-        }
-
-        // 异步执行存储逻辑
-
-
-        return "";
+        return List.of();
     }
+
+
 
     @Override
     public List<SearchItem> search(String keyword, int page) {
@@ -76,7 +60,7 @@ public class BiliMusic implements Music {
         List<SearchItem> list = elements.stream().map(this::convert).filter(Objects::nonNull).toList();
         timepiece.keep("Convert Result");
         timepiece.show();
-        log.info("Bilibili Music search result: {}", list);
+        // log.info("Bilibili Music search result: {}", list);
         return list;
     }
 
