@@ -2,7 +2,6 @@ package com.striveonger.music.fairy.launch;
 
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
-import cn.hutool.http.HttpUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -12,6 +11,7 @@ import com.striveonger.common.core.Timepiece;
 import com.striveonger.music.fairy.sources.api.Music;
 import com.striveonger.music.fairy.sources.api.SearchItem;
 import com.striveonger.music.fairy.sources.bilibili.BiliMusic;
+import com.striveonger.music.fairy.sources.bilibili.BilibiliPlay;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -59,9 +59,8 @@ public class BiliMusicApplicationTests {
 
     @Test
     public void analyze2() {
-        String url = "https://www.bilibili.com/video/BV1wJ4m1a7tX/";
-        // String url = "https://www.bilibili.com/video/BV1Af421X7Kg/";
-        // String url = "https://www.bilibili.com/video/BV1bb411N77n/";
+        String url = "https://www.bilibili.com/video/BV1Pr4y1i7pz/";  // 单P
+        // String url = "https://www.bilibili.com/video/BV1bb411N77n/"; // 分P
         HttpResponse response = HttpRequest.get(url).execute();
         String html = response.body();
         // System.out.println(html);
@@ -83,7 +82,8 @@ public class BiliMusicApplicationTests {
     @Test
     public void lux() {
         Timepiece timepiece = Timepiece.of("RunCommand");
-        Command.Result result = Command.of("lux -j https://www.bilibili.com/video/BV1wJ4m1a7tX").run();
+        List<String> cmds = List.of("lux", "-j", "https://www.bilibili.com/video/BV1wJ4m1a7tX");
+        Command.Result result = Command.of(cmds).run();
         String content = result.getContent();
         JsonNode node = Jackson.toJsonNode(content);
         System.out.println(node);
@@ -101,8 +101,6 @@ public class BiliMusicApplicationTests {
         System.out.println(Jackson.toJSONString(list));
         timepiece.show();
     }
-
-
 
     @Test
     public void play() {
@@ -123,8 +121,16 @@ public class BiliMusicApplicationTests {
         url = "https://xy125x38x8x69xy2408y8610y3b10y1300yy105xy.mcdn.bilivideo.cn:4483/upgcxcode/73/44/60824473/60824473-1-30280.m4s?e=ig8euxZM2rNcNbdlhoNvNC8BqJIzNbfqXBvEqxTEto8BTrNvN0GvT90W5JZMkX_YN0MvXg8gNEV4NC8xNEV4N03eN0B5tZlqNxTEto8BTrNvNeZVuJ10Kj_g2UB02J0mN0B5tZlqNCNEto8BTrNvNC7MTX502C8f2jmMQJ6mqF2fka1mqx6gqj0eN0B599M=&uipk=5&nbs=1&deadline=1728801769&gen=playurlv2&os=mcdn&oi=0&trid=00000bf1207e04dd47ce925f3182577494c0u&mid=0&platform=pc&og=cos&upsig=6294e68b6f980046380a703cb7d71a7b&uparams=e,uipk,nbs,deadline,gen,os,oi,trid,mid,platform,og&mcdnid=16000167&bvc=vod&nettype=0&orderid=0,3&buvid=&build=0&f=u_0_0&agrr=0&bw=16203&logo=A0008000";
         result = HttpRequest.get(url).header(headers, true).execute();
         System.out.println(result.isOk());
+    }
 
-
+    @Test
+    public void bilibiliTest() {
+        // String url = "https://www.bilibili.com/video/BV1Pr4y1i7pz/";  // 单P
+        String url = "https://www.bilibili.com/video/BV1bb411N77n/";  // 分P
+        // String url = "https://www.bilibili.com/video/BV1Mh4y1c7RY/";     // 订阅
+        BiliMusic music = new BiliMusic();
+        List<BilibiliPlay> list = music.playlist(url);
+        System.out.println(Jackson.toJSONString(list));
     }
 
 

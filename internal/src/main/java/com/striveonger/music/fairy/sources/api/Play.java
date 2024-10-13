@@ -6,7 +6,7 @@ package com.striveonger.music.fairy.sources.api;
  */
 public abstract class Play {
 
-    private String type;
+    protected String type;
 
     public String getType() {
         return type;

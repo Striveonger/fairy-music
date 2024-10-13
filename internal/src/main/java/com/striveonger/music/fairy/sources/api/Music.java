@@ -7,19 +7,23 @@ import java.util.List;
  * @description:
  * @date 2024-07-02 20:01
  */
-public interface Music {
+public interface Music<T extends Play> {
 
     String type();
 
     /**
-     * 转换成可播放音频的对象
-     *
+     * 获取播放列表
      * @param url 可播放的流媒体地址
-     * @return
+     * @return 可播放的音频对象
      */
-    <T extends Play> List<T> convert(String url);
+    List<T> playlist(String url);
 
-    <T extends Play> byte[] play(T play);
+    /**
+     * 播放音频
+     * @param play 可播放的音频对象
+     * @return 可播放的音频字节流
+     */
+    byte[] play(T play);
 
     /**
      * 搜索得到列表
