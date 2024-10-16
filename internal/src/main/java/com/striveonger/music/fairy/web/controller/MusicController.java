@@ -1,13 +1,9 @@
 package com.striveonger.music.fairy.web.controller;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.striveonger.common.core.Jackson;
 import com.striveonger.common.core.result.Result;
 import com.striveonger.common.leaf.core.IDGen;
 import com.striveonger.common.storage.web.utils.FileStreamUtils;
@@ -24,9 +20,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * @author Mr.Lee
@@ -72,7 +65,7 @@ public class MusicController {
     }
 
     @GetMapping("/v1/fairy/music/play")
-    public void test(BilibiliPlay play, HttpServletRequest request, HttpServletResponse response) {
+    public void play(BilibiliPlay play, HttpServletRequest request, HttpServletResponse response) {
         // BilibiliPlay play = BeanUtil.toBean(map, BilibiliPlay.class);
         byte[] bytes = music.play(play);
         FileStreamUtils.preview("xx.mp3", request, response, bytes);

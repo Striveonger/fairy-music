@@ -1,6 +1,5 @@
 package com.striveonger.music.fairy.sources.bilibili;
 
-import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
@@ -10,13 +9,8 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.striveonger.common.core.Jackson;
 import com.striveonger.common.core.Timepiece;
-import com.striveonger.common.core.constant.ResultStatus;
-import com.striveonger.common.core.exception.CustomException;
-import com.striveonger.common.core.vo.BasicSearchVo;
 import com.striveonger.music.fairy.sources.api.Music;
-import com.striveonger.music.fairy.sources.api.Play;
 import com.striveonger.music.fairy.sources.api.SearchItem;
-import org.checkerframework.checker.units.qual.A;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -28,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -61,7 +54,7 @@ public class BiliMusic implements Music<BilibiliPlay> {
         List<SearchItem> list = elements.stream().map(this::convert).filter(Objects::nonNull).toList();
         timepiece.keep("Convert Result");
         timepiece.show();
-        // log.info("Bilibili Music search result: {}", list);
+        log.info("Bilibili Music search result: {}", list);
         return list;
     }
 

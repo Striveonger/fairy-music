@@ -27,3 +27,14 @@ export interface SearchItem {
      */
     type: string
 }
+
+export interface Play {
+    type: string,
+    title: string
+}
+
+export interface BilibiliPlay extends Play {
+    bvid: string,
+    aid: string,
+    cid: string
+}
