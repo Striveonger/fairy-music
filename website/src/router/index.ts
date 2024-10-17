@@ -12,7 +12,7 @@ const routes = [
     {
         path: '/play/:url',
         name: 'play',
-        component: () => import("@/views/PlayMusic.vue")
+        component: () => import("@/views/PlayList.vue")
     }
 ];
 

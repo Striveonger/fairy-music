@@ -3,7 +3,6 @@
         <h1>Fairy Music</h1>
         <div class="search">
             <input v-model="searchQuery" @keydown.enter="searchMusic" placeholder="搜索音乐..." />
-            <button @click="searchMusic" :disabled="loading">搜索</button>
         </div>
         <div v-if="loading" class="loading">
             正在搜索...
@@ -23,29 +22,25 @@
         <div v-else-if="searchPerformed" class="no-results">
             没有找到相关音乐
         </div>
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight">
-            <div class="offcanvas-header">
-                <h4 class="offcanvas-title">正在播放:</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-                <PlayMusic v-if="url" :url="url"></PlayMusic>
-            </div>
-        </div>
+        <PlayList :url="url"></PlayList>
+        <PlayMusic v-if="store.play.song" ></PlayMusic>
     </div>
 </template>
 <script setup lang="ts">
 import { defineAsyncComponent, ref } from 'vue';
 import { search } from '@/apis/Music'
 import { SearchItem } from '@/types';
-import PlayMusic from '@/views/PlayMusic.vue';
+import PlayList from '@/views/PlayList.vue';
+import PlayMusic from './PlayMusic.vue';
+
+import { usePlayStore } from '@/store';
+const store = usePlayStore();
 
 const searchQuery = ref('');
 const searchPerformed = ref(false);
 const loading = ref(false);
 const page = ref(1);
 const playlist = ref<Array<SearchItem>>([]);
-const play = ref(null);
 const url = ref('');
 
 const searchMusic = async () => {
@@ -93,6 +88,7 @@ const playSong = (song: SearchItem) => {
         list-style-type: none;
         padding: 0;
         margin-left: 10px;
+        margin-right: 10px;
         display: flex;
         flex-wrap: wrap;
         column-gap: 10px;
@@ -104,18 +100,13 @@ const playSong = (song: SearchItem) => {
             flex-direction: column;
             /* margin: 10px; */
             cursor: pointer;
-            width: max(min(150px, 45%), 15%);
+            width: max(min(200px, 35%), 20%);
             /* height: calc(max(200px, 24%)* 0.6); */
             flex: 1 0 auto;
             align-items: center;
 
             img {
                 width: 100%;
-                /* height: 0; */
-                /* padding-bottom: 65%; */
-                /* min-width: 200px; */
-                /* min-height: 115px; */
-                /* margin-bottom: 10px; */
                 object-fit: cover;
                 display: block;
                 aspect-ratio: 16 / 9;
@@ -132,8 +123,26 @@ const playSong = (song: SearchItem) => {
     }
 }
 
-.music {
-    max-width: 1680px;
-    min-width: 430px;
+// 设置播放列表的宽度
+.offcanvas {
+    width: 100%; // 手机屏
+}
+
+@media (min-width: 600px) and (max-width: 959px) {
+    .offcanvas {
+        width: 70%; // 平板竖屏时，占屏幕宽度的70%
+    }
+}
+
+@media (min-width: 960px) and (max-width: 1365px) {
+    .offcanvas {
+        width: 60%; // 平板横屏或电脑时，占屏幕宽度的60%
+    }
+}
+
+@media (min-width: 1366px) {
+    .offcanvas {
+        width: 40%; // 电脑时，占屏幕宽度的40%
+    }
 }
 </style>

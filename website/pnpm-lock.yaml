@@ -20,6 +20,9 @@ importers:
       bootstrap-icons:
         specifier: 1.11.3
         version: 1.11.3
+      pinia:
+        specifier: 2.2.4
+        version: 2.2.4(typescript@5.2.2)(vue@3.5.10(typescript@5.2.2))
       vue:
         specifier: 3.5.10
         version: 3.5.10(typescript@5.2.2)
@@ -496,6 +499,18 @@ packages:
   picocolors@1.1.0:
     resolution: {integrity: sha512-TQ92mBOW0l3LeMeyLV6mzy/kWr8lkd/hp3mTg7wYK7zJhuBStmGMBG0BdeDZS/dZx1IukaX6Bk11zcln25o1Aw==}
 
+  pinia@2.2.4:
+    resolution: {integrity: sha512-K7ZhpMY9iJ9ShTC0cR2+PnxdQRuwVIsXDO/WIEV/RnMC/vmSoKDTKW/exNQYPI+4ij10UjXqdNiEHwn47McANQ==}
+    peerDependencies:
+      '@vue/composition-api': ^1.4.0
+      typescript: '>=4.4.4'
+      vue: ^2.6.14 || ^3.3.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+      typescript:
+        optional: true
+
   pnpm@9.12.0:
     resolution: {integrity: sha512-Sr9yUITXvLr71yi/x77mHy95H5d/2HVCs1edyyNQTRcNRjN5ReTGZIXNEtWIoMDlcO2cR358zdhQfPBfP5Lqyg==}
     engines: {node: '>=18.12'}
@@ -581,6 +596,17 @@ packages:
 
   vscode-uri@3.0.8:
     resolution: {integrity: sha512-AyFQ0EVmsOZOlAnxoFOGOq1SQDWAB7C6aqMGS23svWAllfOaxbuFvcT8D1i8z3Gyn8fraVeZNNmN6e9bxxXkKw==}
+
+  vue-demi@0.14.10:
+    resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
+    engines: {node: '>=12'}
+    hasBin: true
+    peerDependencies:
+      '@vue/composition-api': ^1.0.0-rc.1
+      vue: ^3.0.0-0 || ^2.6.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
 
   vue-router@4.4.5:
     resolution: {integrity: sha512-4fKZygS8cH1yCyuabAXGUAsyi1b2/o/OKgu/RUb+znIYOxPRxdkytJEx+0wGcpBE1pX6vUgh5jwWOKRGvuA/7Q==}
@@ -966,6 +992,14 @@ snapshots:
 
   picocolors@1.1.0: {}
 
+  pinia@2.2.4(typescript@5.2.2)(vue@3.5.10(typescript@5.2.2)):
+    dependencies:
+      '@vue/devtools-api': 6.6.4
+      vue: 3.5.10(typescript@5.2.2)
+      vue-demi: 0.14.10(vue@3.5.10(typescript@5.2.2))
+    optionalDependencies:
+      typescript: 5.2.2
+
   pnpm@9.12.0: {}
 
   postcss@8.4.39:
@@ -1035,6 +1069,10 @@ snapshots:
       sass: 1.79.4
 
   vscode-uri@3.0.8: {}
+
+  vue-demi@0.14.10(vue@3.5.10(typescript@5.2.2)):
+    dependencies:
+      vue: 3.5.10(typescript@5.2.2)
 
   vue-router@4.4.5(vue@3.5.10(typescript@5.2.2)):
     dependencies:
