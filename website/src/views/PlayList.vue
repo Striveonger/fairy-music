@@ -11,6 +11,7 @@
                         <div class="song" :class="{ active: index == current }" @click="save(song, index)">
                             {{ song.title}}
                         </div>
+                        <hr class="line">
                     </template>
                 </div>
             </div>
@@ -64,9 +65,16 @@ watch(() => props.url, load)
     padding-bottom: 80px;
 }
 
+// 添加水平线的样式
+.line {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(140, 192, 222, 0.75), rgba(0, 0, 0, 0));
+    margin: 0 0;
+}
+
 .playlist {
     margin: 10px;
-
     .song {
         cursor: pointer;
         margin: 2px 3px;
@@ -75,7 +83,6 @@ watch(() => props.url, load)
         font-family: 'Hannotate SC';
         font-weight: bold;
     }
-
     .active {
         padding-left: 23px;
         border-radius: 7px;

@@ -1,69 +1,122 @@
 <template>
+    <audio id="audio" :src="store.play.url" autoplay loop></audio>
     <div class="controls">
-        <audio controls autoplay loop>
-            <source :src="store.play.url">
-            <!-- <source src="/api/v1/fairy/music/play?type=bilibili&bvid=BV1k3411f7mX&aid=432942112&cid=900040384"> -->
+        <!-- 
+        <audio autoplay loop>
+            <source :src="store.play.url" type="audio/mpeg">
         </audio>
-        <!-- <audio src="/api/v1/fairy/music/play?type=bilibili&bvid=BV1k3411f7mX&aid=432942112&cid=900040384" controls autoplay loop></audio> -->
+        -->
+        <!-- <audio :src="store.play.url" controls autoplay loop></audio> -->
+        <div class="layers">
+            <!-- <div class="title">{{ store.play.song.title }}</div> -->
+            <div class="play-progress" :style="palyProgress"></div>
+            <div class="buttons">
+                <!-- 控制器 -->
+                <i class="bi bi-skip-start-fill"></i>
+                <i class="bi "></i>
+                <i class="bi" :class="isPlaying ? 'bi-pause-fill' : 'bi-play-fill'" @click="onPlayOrPause"></i>
+                <i class="bi bi-skip-end-fill"></i>
+            </div>
+        </div>
+
+
     </div>
 </template>
 
 <script setup lang="ts">
-import { watch } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { usePlayStore } from '@/store';
 const store = usePlayStore();
-// watch(() => store.play.song.title, () => {
-//     // window.title = store.play.song.title
-//     document.title = store.play.song.title
-// });
+const isPlaying = ref(true);
+const percentage = ref(0);
+let audio = null;
+const palyProgress = computed(() => {
+    return "width:"+ percentage.value +"%;"
+})
+
+const onPlayOrPause = () => {
+    isPlaying.value = !isPlaying.value;
+    if (isPlaying.value) {
+        audio.play();
+    } else {
+        audio.pause();
+    }
+}
+
+onMounted(() => {
+    // 绑定播放和暂停事件 & 进度条
+    audio = document.getElementById("audio");
+    audio.addEventListener("play", () => isPlaying.value = true);
+    audio.addEventListener("pause", () => isPlaying.value = false);
+    audio.addEventListener("timeupdate", () => percentage.value = audio.currentTime / audio.duration * 100);
+});
 </script>
 
 <style scoped lang="scss">
 .controls {
+    height: 55px;
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
     z-index: 2000;
     background-color: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(10px);
-    padding: 10px;
+    backdrop-filter: blur(5px);
+    padding: 0px;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
 
-    audio {
+    .layers {
+        position: relative;
         width: 100%;
-        max-width: 600px;
-        margin: 0 auto;
-        display: block;
+        height: 100%;
+
+        div {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+
+            i {
+                color: #12121299;
+                font-size: 2.5rem;
+                padding-left: 0px;
+                padding-right: 10px;
+                cursor: pointer;
+                z-index: 2004;
+
+                &:hover {
+                    color: #000;
+                }
+            }
+        }
+
+        .title {
+            z-index: 2002;
+            font-weight: bold;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center; // 垂直居中对齐
+            z-index: 2003;
+        }
+
+        .play-progress {
+            height: 10%;
+            background: linear-gradient(to bottom, rgb(242, 150, 150), rgb(242, 242, 161), rgb(89, 146, 89), rgb(95, 182, 233), rgb(156, 129, 174), rgb(240, 167, 240));
+            z-index: 2001;
+        }
+
     }
 }
-// audio::-webkit-media-controls-panel
 
-// audio::-webkit-media-controls-mute-button
-
-// audio::-webkit-media-controls-play-button
-
-// audio::-webkit-media-controls-timeline-container
-
-// audio::-webkit-media-controls-current-time-display
-
-// audio::-webkit-media-controls-time-remaining-display
-
-// audio::-webkit-media-controls-timeline
-
-// audio::-webkit-media-controls-volume-slider-container
-
-// audio::-webkit-media-controls-volume-slider
-
-// audio::-webkit-media-controls-seek-back-button
-
-// audio::-webkit-media-controls-seek-forward-button
-
-// audio::-webkit-media-controls-fullscreen-button
-
-// audio::-webkit-media-controls-rewind-button
-
-// audio::-webkit-media-controls-return-to-realtime-button
-
-// audio::-webkit-media-controls-toggle-closed-captions-button
+audio {
+    display: none;
+}
 </style>
