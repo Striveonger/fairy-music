@@ -32,6 +32,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  */
 public class BiliMusic implements Music<BilibiliPlay> {
     private final Logger log = LoggerFactory.getLogger(BiliMusic.class);
+    // 如果利益不能共享, 为何责任要平摊.
+    // 如果个人的困苦与集体无关, 那集体的荣辱又与我何干.
 
     @Override
     public String type() {
@@ -113,10 +115,19 @@ public class BiliMusic implements Music<BilibiliPlay> {
             }
         }
         log.info("auto play url: {}", url);
-        result = HttpRequest.get(url).header(headers, true).execute();
-        if (result.isOk()) {
-            bytes = result.bodyBytes();
-        }
+        boolean retry = false;
+        int cnt = 3;
+        do {
+            try {
+                result = HttpRequest.get(url).header(headers, true).execute();
+                if (result.isOk()) {
+                    bytes = result.bodyBytes();
+                }
+            } catch (Exception e) {
+                log.error("auto play url: {}", url);
+                retry = true;
+            }
+        } while (retry && --cnt > 0);
         return bytes;
     }
 

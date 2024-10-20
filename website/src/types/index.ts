@@ -30,19 +30,11 @@ export interface SearchItem {
 
 export interface Play {
     type: string,
-    title: string,
-    url: () => string,
+    title: string
 }
 
 export interface BilibiliPlay extends Play {
     bvid: string,
     aid: string,
     cid: string
-}
-
-export interface PlayStore {
-    song: Play | null,
-    url: string | null,
-    index: number | null,
-    source: string | null
 }

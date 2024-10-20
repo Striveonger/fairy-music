@@ -1,5 +1,5 @@
 <template>
-    <audio id="audio" :src="store.play.url" autoplay loop></audio>
+    <audio id="audio" :src="store.currentPlayURL" autoplay :loop="isLoop"></audio>
     <div class="controls">
         <!-- 
         <audio autoplay loop>
@@ -8,31 +8,30 @@
         -->
         <!-- <audio :src="store.play.url" controls autoplay loop></audio> -->
         <div class="layers">
-            <!-- <div class="title">{{ store.play.song.title }}</div> -->
+            <div class="title">{{ store.currentTitle }}</div>
             <div class="play-progress" :style="palyProgress"></div>
             <div class="buttons">
                 <!-- 控制器 -->
-                <i class="bi bi-skip-start-fill"></i>
-                <i class="bi "></i>
+                <i class="bi bi-skip-start-fill" @click="store.prev"></i>
                 <i class="bi" :class="isPlaying ? 'bi-pause-fill' : 'bi-play-fill'" @click="onPlayOrPause"></i>
-                <i class="bi bi-skip-end-fill"></i>
+                <i class="bi bi-skip-end-fill" @click="store.next"></i>
             </div>
         </div>
-
-
     </div>
 </template>
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
-import { usePlayStore } from '@/store';
-const store = usePlayStore();
+import { usePlayListStore } from '@/store';
+const store = usePlayListStore();
 const isPlaying = ref(true);
+const isLoop = ref(false);
 const percentage = ref(0);
 let audio = null;
+
 const palyProgress = computed(() => {
     return "width:"+ percentage.value +"%;"
-})
+});
 
 const onPlayOrPause = () => {
     isPlaying.value = !isPlaying.value;
@@ -48,27 +47,32 @@ onMounted(() => {
     audio = document.getElementById("audio");
     audio.addEventListener("play", () => isPlaying.value = true);
     audio.addEventListener("pause", () => isPlaying.value = false);
-    audio.addEventListener("timeupdate", () => percentage.value = audio.currentTime / audio.duration * 100);
+    audio.addEventListener("timeupdate", () => {
+        percentage.value = audio.currentTime / audio.duration * 100
+        if(!isLoop.value && audio.currentTime == audio.duration) {
+            store.next();
+        }
+    });
 });
 </script>
 
 <style scoped lang="scss">
 .controls {
-    height: 55px;
+    height: 65px;
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
     z-index: 2000;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(5px);
     padding: 0px;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 -2px 10px rgba(23, 23, 23, 0.3);
 
     .layers {
         position: relative;
         width: 100%;
-        height: 100%;
+        height: 55px;
 
         div {
             position: absolute;
@@ -76,10 +80,9 @@ onMounted(() => {
             left: 0;
             width: 100%;
             height: 100%;
-
             i {
                 color: #12121299;
-                font-size: 2.5rem;
+                font-size: 3.1rem;
                 padding-left: 0px;
                 padding-right: 10px;
                 cursor: pointer;
@@ -93,11 +96,12 @@ onMounted(() => {
 
         .title {
             z-index: 2002;
-            font-weight: bold;
-            font-size: 1rem;
+            margin-top: 10px;
+            // font-weight: bold;
+            font-size: 0.7rem;
             display: flex;
-            align-items: center;
-            justify-content: flex-start;
+            align-items: last baseline;
+            justify-content: center;
         }
 
         .buttons {
@@ -108,11 +112,10 @@ onMounted(() => {
         }
 
         .play-progress {
-            height: 10%;
+            height: 15%;
             background: linear-gradient(to bottom, rgb(242, 150, 150), rgb(242, 242, 161), rgb(89, 146, 89), rgb(95, 182, 233), rgb(156, 129, 174), rgb(240, 167, 240));
             z-index: 2001;
         }
-
     }
 }
 

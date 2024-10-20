@@ -7,8 +7,8 @@
         <div class="offcanvas-body">
             <div class="play-music-container">
                 <div class="playlist">
-                    <template v-for="(song, index) in list" :key="index">
-                        <div class="song" :class="{ active: index == current }" @click="save(song, index)">
+                    <template v-for="(song, index) in playListStore.list" :key="index">
+                        <div class="song" :class="{ active: index == playListStore.currentIndex }" @click="save(song, index)">
                             {{ song.title}}
                         </div>
                         <hr class="line">
@@ -22,42 +22,39 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
 import { playlist } from "@/apis/Music";
-import { BilibiliPlay, Play } from '@/types';
-import { usePlayStore } from '@/store';
+import { Play } from '@/types';
+import { usePlayListStore } from '@/store';
 
 const props = defineProps<{ url: string }>();
-const list = ref<Play[]>([]);
+// const list = ref<Play[]>([]);
 // const playUrl = ref('');
-const current = ref<Number>(-1);
-const store = usePlayStore();
+// const current = ref<Number>(-1);
+const playListStore = usePlayListStore();
 
 const load = async () => {
     console.log('url :>> ', props.url);
     try {
-        list.value = [];
-        current.value = -1;
+        playListStore.list = [];
+        playListStore.currentIndex = -1;
         let result = await playlist(props.url);
         console.log('result :>> ', result);
-        list.value = result;
+        // list.value = result;
+        // list to pinia
+        playListStore.list = result;
+        playListStore.url = props.url;
     } catch (error) {
         console.error('Error fetching playlist:', error);
-        list.value = [];
+        playListStore.list = [];
+        playListStore.currentIndex = -1;
     }
 }
 const save = (song: Play, index: number) => {
     console.log('song :>> ', song);
-    current.value = index;
+    playListStore.currentIndex = index;
     document.title = song.title;
-    if (song.type == "bilibili") {
-        store.play.song = song;
-        store.play.index = index;
-        store.play.source = props.url;
-        let x = song as BilibiliPlay;
-        store.play.url = `/api/v1/fairy/music/play?type=${x.type}&bvid=${x.bvid}&aid=${x.aid}&cid=${x.cid}`;
-    }
 }
 onMounted(load);
-watch(() => props.url, load)
+watch(() => props.url, load);
 </script>
 
 <style scoped lang="scss">

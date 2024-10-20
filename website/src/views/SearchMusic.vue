@@ -7,8 +7,7 @@
         </span>
 
         <div class="search" role="search">
-            <input type="search" class="form-control" v-model="searchQuery" @keydown.enter="searchMusic"
-                placeholder="搜索音乐..." aria-label="Search">
+            <input type="search" class="form-control" v-model="searchQuery" @keydown.enter="searchMusic(searchQuery)" placeholder="搜索音乐..." aria-label="Search">
         </div>
     </div>
 
@@ -32,18 +31,18 @@
             没有找到相关音乐
         </div>
         <PlayList :url="url"></PlayList>
-        <PlayMusic v-if="store.play.song"></PlayMusic>
+        <PlayMusic v-if="store.currentIndex >= 0"></PlayMusic>
     </div>
 </template>
 <script setup lang="ts">
-import { defineAsyncComponent, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { search } from '@/apis/Music'
 import { SearchItem } from '@/types';
 import PlayList from '@/views/PlayList.vue';
 import PlayMusic from './PlayMusic.vue';
 
-import { usePlayStore } from '@/store';
-const store = usePlayStore();
+import { usePlayListStore} from '@/store';
+const store = usePlayListStore();
 
 const searchQuery = ref('');
 const searchPerformed = ref(false);
@@ -52,11 +51,12 @@ const page = ref(1);
 const playlist = ref<Array<SearchItem>>([]);
 const url = ref('');
 
-const searchMusic = async () => {
+const searchMusic = async (val) => {
     searchPerformed.value = true;
     loading.value = true;
     try {
-        const result = await search(searchQuery.value, page.value);
+        console.log('val :>> ', val);
+        const result = await search(val, page.value);
         console.log("data: {}", result);
         playlist.value = result;
     } catch (error) {
@@ -78,6 +78,10 @@ const playSong = (song: SearchItem) => {
         url.value = song.url;
     }
 };
+
+onMounted(() => {
+    searchMusic("8090");
+});
 </script>
 
 <style scoped lang="scss">
