@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { usePlayListStore } from '@/store';
 const store = usePlayListStore();
 const isPlaying = ref(true);
@@ -53,7 +53,10 @@ onMounted(() => {
             store.next();
         }
     });
+    isLoop.value = store.list.length === 0;
 });
+watch(() => store.list.length, (len) => isLoop.value = len === 0);
+watch(() => store.currentTitle, (title) => document.title = title);
 </script>
 
 <style scoped lang="scss">
@@ -113,7 +116,7 @@ onMounted(() => {
 
         .play-progress {
             height: 15%;
-            background: linear-gradient(to bottom, rgb(242, 150, 150), rgb(242, 242, 161), rgb(89, 146, 89), rgb(95, 182, 233), rgb(156, 129, 174), rgb(240, 167, 240));
+            background: linear-gradient(to bottom right, rgb(242, 150, 150), rgb(242, 242, 161), rgb(89, 146, 89), rgb(95, 182, 233), rgb(156, 129, 174), rgb(240, 167, 240));
             z-index: 2001;
         }
     }
