@@ -1,14 +1,23 @@
 import { Result, http } from "./index";
 import { SearchItem, Play, BilibiliPlay } from "../types";
+import { AnyAaaaRecord } from "dns";
 
 export async function search(keyword: string, page: number): Promise<SearchItem[]> {
-    const result = await http.get<Result<SearchItem>>("/api/v1/fairy/music/search", { params: { keyword, page } })
-                        .then((response: { data: Result<SearchItem> }) => response.data);
-    return result.data as SearchItem[];
+    const result = await http.get<Result<SearchItem>>("/api/v1/fairy/music/search", { params: { keyword, page } });
+    return result.data.data as SearchItem[];
+
+}
+
+let x = (res: { data: Result<Play> }) => {
+    return res.data;
+}
+    
+var y = function(res: { data: Result<Play> }) {
+    return res.data;
 }
 
 export async function playlist(url: string): Promise<Play[]> {
-    const result = await http.get<Result<Play>>("/api/v1/fairy/music/playlist", { params: { url } })
-                        .then((response: { data: Result<Play> }) => response.data);
-    return result.data as Play[];
+    // http.get<Result<Play>>("/api/v1/fairy/music/playlist", { params: { url } }).then(x).catch(y);
+    const response = await http.get<Result<Play>>("/api/v1/fairy/music/playlist", { params: { url } });
+    return response.data.data as Play[];
 }

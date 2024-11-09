@@ -11,7 +11,7 @@ export interface Result<T> {
     state: number,
     now: Date,
     message: string,
-    data: T | Array<T> | null
+    data: T | T[] | null
 };
 
 export const http = axios.create({

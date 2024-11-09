@@ -1,5 +1,6 @@
 package com.striveonger.music.fairy.sources.bilibili;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
@@ -83,10 +84,25 @@ public class BiliMusic implements Music<BilibiliPlay> {
             String aid = root.get("aid").asText();
             for (int i = 0; i < array.size(); i++) {
                 node = array.get(i);
-                String title = node.get("part").asText();
                 String cid = node.get("cid").asText();
+                String title = node.get("part").asText();
                 BilibiliPlay play = new BilibiliPlay(bvid, aid, cid, title);
                 list.add(play);
+            }
+        }
+        // 解析合集中所有视频
+        if (CollUtil.isEmpty(list) || list.size() == 1) {
+            node = root.get("availableVideoList");
+            if (node instanceof ArrayNode array) {
+                for (int i = 0; i < array.size(); i++) {
+                    node = array.get(i);
+                    String bvid = node.get("bvid").asText();
+                    String aid = node.get("aid").asText();
+                    String cid = node.get("cid").asText();
+                    String title = node.get("title").asText();
+                    BilibiliPlay play = new BilibiliPlay(bvid, aid, cid, title);
+                    list.add(play);
+                }
             }
         }
         timepiece.show();

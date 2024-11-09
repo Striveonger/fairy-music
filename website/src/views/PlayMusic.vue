@@ -115,8 +115,8 @@ watch(() => store.currentTitle, (title) => document.title = title);
         }
 
         .play-progress {
-            height: 15%;
-            background: linear-gradient(to bottom right, rgb(242, 150, 150), rgb(242, 242, 161), rgb(89, 146, 89), rgb(95, 182, 233), rgb(156, 129, 174), rgb(240, 167, 240));
+            height: 10%;
+            background: linear-gradient(to bottom right, rgb(246, 43, 43), rgb(239, 195, 63), rgb(84, 154, 84), rgb(33, 151, 219), rgb(182, 135, 213), rgb(240, 167, 240));
             z-index: 2001;
         }
     }
@@ -125,4 +125,5 @@ watch(() => store.currentTitle, (title) => document.title = title);
 audio {
     display: none;
 }
+
 </style>

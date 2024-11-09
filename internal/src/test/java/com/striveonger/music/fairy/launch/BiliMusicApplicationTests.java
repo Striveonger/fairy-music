@@ -126,8 +126,8 @@ public class BiliMusicApplicationTests {
     @Test
     public void bilibiliTest() {
         // String url = "https://www.bilibili.com/video/BV1Pr4y1i7pz/";  // 单P
-        String url = "https://www.bilibili.com/video/BV1bb411N77n/";     // 分P
-        // String url = "https://www.bilibili.com/video/BV1Mh4y1c7RY/";  // 订阅
+        // String url = "https://www.bilibili.com/video/BV1bb411N77n/";     // 分P
+        String url = "https://www.bilibili.com/video/BV1Mh4y1c7RY/";  // 订阅
         BiliMusic music = new BiliMusic();
         List<BilibiliPlay> list = music.playlist(url);
         System.out.println(Jackson.toJSONString(list));

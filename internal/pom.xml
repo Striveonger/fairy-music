@@ -32,18 +32,10 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>com.striveonger.common</groupId>
-            <artifactId>own-storage</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.striveonger.common</groupId>
-            <artifactId>own-user</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>com.striveonger.common</groupId>
-            <artifactId>own-ext</artifactId>
+            <artifactId>own-web</artifactId>
         </dependency>
 
         <dependency>

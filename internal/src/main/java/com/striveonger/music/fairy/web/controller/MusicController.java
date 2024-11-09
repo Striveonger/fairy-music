@@ -1,17 +1,14 @@
 package com.striveonger.music.fairy.web.controller;
 
-import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import com.striveonger.common.core.result.Result;
-import com.striveonger.common.leaf.core.IDGen;
-import com.striveonger.common.storage.web.utils.FileStreamUtils;
+import com.striveonger.common.web.utils.ResponseStreamUtils;
 import com.striveonger.music.fairy.sources.api.Music;
 import com.striveonger.music.fairy.sources.bilibili.BiliMusic;
 import com.striveonger.music.fairy.sources.bilibili.BilibiliPlay;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -30,16 +27,8 @@ import java.util.List;
 public class MusicController {
     private final Logger log = LoggerFactory.getLogger(MusicController.class);
 
-    @Resource
-    private IDGen fitIDGen;
-
     private final Music<BilibiliPlay> music = new BiliMusic();
 
-    @GetMapping("/v1/fairy/music/hello")
-    public Result hello() {
-        log.info("hello");
-        return Result.success().message("Hello World!").data(Dict.of("segment", fitIDGen.next("A")).set("snowflake", fitIDGen.next()));
-    }
 
     @GetMapping("/v1/fairy/music/search")
     public Result search(String keyword, Integer page) {
@@ -53,9 +42,10 @@ public class MusicController {
 
     @GetMapping("/v1/fairy/music/cover")
     public void cover(String url, HttpServletRequest request, HttpServletResponse response) {
-        HttpResponse result = HttpRequest.get(url).execute();
-        byte[] bytes = result.bodyBytes();
-        FileStreamUtils.preview("xx.jpg", request, response, bytes);
+        try (HttpResponse result = HttpRequest.get(url).execute()){
+            byte[] bytes = result.bodyBytes();
+            ResponseStreamUtils.preview("xx.jpg", request, response, bytes);
+        }
     }
 
     @GetMapping("/v1/fairy/music/playlist")
@@ -66,11 +56,7 @@ public class MusicController {
 
     @GetMapping("/v1/fairy/music/play")
     public void play(BilibiliPlay play, HttpServletRequest request, HttpServletResponse response) {
-        // BilibiliPlay play = BeanUtil.toBean(map, BilibiliPlay.class);
         byte[] bytes = music.play(play);
-        FileStreamUtils.preview("xx.mp3", request, response, bytes);
+        ResponseStreamUtils.preview("xx.mp3", request, response, bytes);
     }
-
-
-
 }
