@@ -20,7 +20,7 @@ export default defineConfig({
     },
     server: {
         open: false,
-        port: 5203,
+        port: 2222,
         // https: false,
         host: "0.0.0.0",
         proxy: {
@@ -30,6 +30,13 @@ export default defineConfig({
                 changeOrigin: true,
                 // secure: false,
                 // rewrite: (path: any) => path.replace(/^\/fm/, '')
+            },
+            "/prom": {
+                // target: 'http://127.0.0.1:18081',
+                target: 'http://10.13.144.116:9090/',
+                changeOrigin: true,
+                // secure: false,
+                rewrite: (path: any) => path.replace(/^\/prom/, '')
             }
         }
     }
