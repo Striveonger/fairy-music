@@ -4,7 +4,6 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import com.striveonger.common.core.result.Result;
-import com.striveonger.common.web.utils.ResponseStreamUtils;
 import com.striveonger.music.fairy.sources.api.Music;
 import com.striveonger.music.fairy.sources.bilibili.BiliMusic;
 import com.striveonger.music.fairy.sources.bilibili.BilibiliPlay;
@@ -18,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static com.striveonger.common.web.ResponseStreamKit.preview;
+
 /**
  * @author Mr.Lee
  * @since 2024-08-27 23:12
@@ -28,7 +29,6 @@ public class MusicController {
     private final Logger log = LoggerFactory.getLogger(MusicController.class);
 
     private final Music<BilibiliPlay> music = new BiliMusic();
-
 
     @GetMapping("/v1/fairy/music/search")
     public Result search(String keyword, Integer page) {
@@ -44,7 +44,7 @@ public class MusicController {
     public void cover(String url, HttpServletRequest request, HttpServletResponse response) {
         try (HttpResponse result = HttpRequest.get(url).execute()){
             byte[] bytes = result.bodyBytes();
-            ResponseStreamUtils.preview("xx.jpg", request, response, bytes);
+            preview("xx.jpg", request, response, bytes);
         }
     }
 
@@ -57,6 +57,6 @@ public class MusicController {
     @GetMapping("/v1/fairy/music/play")
     public void play(BilibiliPlay play, HttpServletRequest request, HttpServletResponse response) {
         byte[] bytes = music.play(play);
-        ResponseStreamUtils.preview("xx.mp3", request, response, bytes);
+        preview("xx.mp3", request, response, bytes);
     }
 }
