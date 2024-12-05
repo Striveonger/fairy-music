@@ -21,11 +21,10 @@ pnpm -C website run build
 
 # build image
 docker rmi fairy-music:1.0.0
-# docker rmi fairy-music-ui:1.0.0
+docker rmi fairy-music-ui:1.0.0
 
 docker build -f ./ci-cd/docker/service/Dockerfile -t fairy-music:1.0.0 .
-
-# docker build -f ./ci-cd/docker/ui/Dockerfile -t fairy-music-ui:1.0.0 .
+docker build -f ./ci-cd/docker/ui/Dockerfile -t fairy-music-ui:1.0.0 .
 
 # helm package cicd/helm  -d ./images/${arch}/
 
