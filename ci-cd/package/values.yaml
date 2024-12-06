@@ -21,3 +21,9 @@ app:
 env:
   - name: LOG_LEVEL
     value: info
+
+ingress:
+  enabled: false
+
+service:
+  type: ClusterIP

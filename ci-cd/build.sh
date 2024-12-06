@@ -20,13 +20,23 @@ pnpm -C website install
 pnpm -C website run build
 
 # build image
-docker rmi fairy-music:1.0.0
-docker rmi fairy-music-ui:1.0.0
+docker rmi striveonger/fairy-music-service:1.0.0
+docker rmi striveonger/fairy-music-ui:1.0.0
 
-docker build -f ./ci-cd/docker/service/Dockerfile -t fairy-music:1.0.0 .
-docker build -f ./ci-cd/docker/ui/Dockerfile -t fairy-music-ui:1.0.0 .
+docker build -f ./ci-cd/docker/service/Dockerfile -t striveonger/fairy-music-service:1.0.0 .
+docker build -f ./ci-cd/docker/ui/Dockerfile -t striveonger/fairy-music-ui:1.0.0 .
 
-# helm package cicd/helm  -d ./images/${arch}/
+# docker push striveonger/fairy-music-service:1.0.0
+# docker push striveonger/fairy-music-ui:1.0.0
 
-popd  || exit
+# package helm
+helm package ci-cd/helm
+mv fairy-music-1.0.0.tgz ci-cd/package
+helm show values ci-cd/helm > ci-cd/package/values.yaml
+
+# deploy
+helm uninstall fairy-music -n fm
+helm install fairy-music ci-cd/package/fairy-music-1.0.0.tgz --values ci-cd/package/values.yaml -n fm --create-namespace
+
+popd || exit
 

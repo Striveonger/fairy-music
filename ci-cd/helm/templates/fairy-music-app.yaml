@@ -1,0 +1,62 @@
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  namespace: "{{ .Release.Namespace }}"
+  name: {{ include "fairy-music.name" . }}-app-deployment
+  labels:
+{{ include "fairy-music.labels" .  | indent 4 }}
+spec:
+  replicas: {{ .Values.app.service.replicaCount }}
+  selector:
+    matchLabels:
+{{ include "fairy-music-app.selectorLabels" .  | indent 6 }}
+  template:
+    metadata:
+      namespace: "{{ .Release.Namespace }}"
+      name:  {{ include "fairy-music.name" . }}
+      labels:
+{{ include "fairy-music.labels" .  | indent 8 }}
+    spec:
+      containers:
+        - name:  {{ include "fairy-music.name" . }}
+          image: "{{ .Values.app.service.image.repository }}:{{ .Values.app.service.image.tag }}"
+          resources:
+            limits:
+              cpu: "{{ .Values.app.service.resources.cpu }}"
+              memory: "{{ .Values.app.service.resources.memory }}"
+            requests:
+              cpu: "{{ .Values.app.service.resources.cpu }}"
+              memory: "{{ .Values.app.service.resources.memory }}"
+          ports:
+            - containerPort: {{ .Values.app.service.port }}
+              protocol: "TCP"
+          volumeMounts:
+          - name: node-logs
+            mountPath: /var/log/fairy-music
+          env:
+{{- toYaml .Values.env | nindent 10 }}
+      restartPolicy: "Always"
+      volumes:
+      - name: node-logs
+        hostPath:
+          path: /var/log/fairy-music
+          type: "DirectoryOrCreate"
+
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  namespace: "{{ .Release.Namespace }}"
+  name: {{ include "fairy-music.name" . }}-service
+  labels:
+{{ include "fairy-music.labels" .  | indent 4 }}
+spec:
+  type: "ClusterIP"
+  ports:
+    - protocol: "TCP"
+      port: {{ .Values.app.service.port }}
+      targetPort: {{ .Values.app.service.port }}
+  selector:
+{{ include "fairy-music-app.selectorLabels" .  | indent 4 }}
+  sessionAffinity: ClientIP

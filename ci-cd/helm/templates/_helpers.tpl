@@ -35,7 +35,6 @@ Common labels
 */}}
 {{- define "fairy-music.labels" -}}
 helm.sh/chart: {{ include "fairy-music.chart" . }}
-{{ include "fairy-music.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,9 +44,16 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "fairy-music.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "fairy-music.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
+{{- define "fairy-music-app.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "fairy-music.name" . }}-app
+app.kubernetes.io/instance: {{ .Release.Name }}-app
+app.kubernetes.io/namespace: {{ .Release.Namespace }}
+{{- end }}
+
+{{- define "fairy-music-ui.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "fairy-music.name" . }}-ui
+app.kubernetes.io/instance: {{ .Release.Name }}-ui
+app.kubernetes.io/namespace: {{ .Release.Namespace }}
 {{- end }}
 
 {{/*
