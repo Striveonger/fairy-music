@@ -44,9 +44,9 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "fairy-music-app.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "fairy-music.name" . }}-app
-app.kubernetes.io/instance: {{ .Release.Name }}-app
+{{- define "fairy-music-api.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "fairy-music.name" . }}-api
+app.kubernetes.io/instance: {{ .Release.Name }}-api
 app.kubernetes.io/namespace: {{ .Release.Namespace }}
 {{- end }}
 

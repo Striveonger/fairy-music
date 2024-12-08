@@ -3,33 +3,34 @@ apiVersion: "apps/v1"
 kind: "Deployment"
 metadata:
   namespace: "{{ .Release.Namespace }}"
-  name: {{ include "fairy-music.name" . }}-app-deployment
+  name: {{ include "fairy-music.name" . }}-api-deployment
   labels:
 {{ include "fairy-music.labels" .  | indent 4 }}
 spec:
-  replicas: {{ .Values.app.service.replicaCount }}
+  replicas: {{ .Values.app.api.replicaCount }}
   selector:
     matchLabels:
-{{ include "fairy-music-app.selectorLabels" .  | indent 6 }}
+{{ include "fairy-music-api.selectorLabels" .  | indent 6 }}
   template:
     metadata:
       namespace: "{{ .Release.Namespace }}"
       name:  {{ include "fairy-music.name" . }}
       labels:
+{{ include "fairy-music-api.selectorLabels" .  | indent 8 }}
 {{ include "fairy-music.labels" .  | indent 8 }}
     spec:
       containers:
         - name:  {{ include "fairy-music.name" . }}
-          image: "{{ .Values.app.service.image.repository }}:{{ .Values.app.service.image.tag }}"
+          image: "{{ .Values.app.api.image.repository }}:{{ .Values.app.api.image.tag }}"
           resources:
             limits:
-              cpu: "{{ .Values.app.service.resources.cpu }}"
-              memory: "{{ .Values.app.service.resources.memory }}"
+              cpu: "{{ .Values.app.api.resources.cpu }}"
+              memory: "{{ .Values.app.api.resources.memory }}"
             requests:
-              cpu: "{{ .Values.app.service.resources.cpu }}"
-              memory: "{{ .Values.app.service.resources.memory }}"
+              cpu: "{{ .Values.app.api.resources.cpu }}"
+              memory: "{{ .Values.app.api.resources.memory }}"
           ports:
-            - containerPort: {{ .Values.app.service.port }}
+            - containerPort: {{ .Values.app.api.port }}
               protocol: "TCP"
           volumeMounts:
           - name: node-logs
@@ -48,15 +49,15 @@ apiVersion: "v1"
 kind: "Service"
 metadata:
   namespace: "{{ .Release.Namespace }}"
-  name: {{ include "fairy-music.name" . }}-service
+  name: {{ include "fairy-music.name" . }}-api-service
   labels:
 {{ include "fairy-music.labels" .  | indent 4 }}
 spec:
   type: "ClusterIP"
   ports:
     - protocol: "TCP"
-      port: {{ .Values.app.service.port }}
-      targetPort: {{ .Values.app.service.port }}
+      port: {{ .Values.app.api.port }}
+      targetPort: {{ .Values.app.api.port }}
   selector:
-{{ include "fairy-music-app.selectorLabels" .  | indent 4 }}
+{{ include "fairy-music-api.selectorLabels" .  | indent 4 }}
   sessionAffinity: ClientIP

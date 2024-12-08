@@ -1,0 +1,55 @@
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  namespace: "{{ .Release.Namespace }}"
+  name: {{ include "fairy-music.name" . }}-ui-deployment
+  labels:
+{{ include "fairy-music.labels" .  | indent 4 }}
+spec:
+  replicas: {{ .Values.app.ui.replicaCount }}
+  selector:
+    matchLabels:
+{{ include "fairy-music-ui.selectorLabels" .  | indent 6 }}
+  template:
+    metadata:
+      namespace: "{{ .Release.Namespace }}"
+      name:  {{ include "fairy-music.name" . }}
+      labels:
+{{ include "fairy-music-ui.selectorLabels" .  | indent 8 }}
+{{ include "fairy-music.labels" .  | indent 8 }}
+    spec:
+      containers:
+        - name:  {{ include "fairy-music.name" . }}
+          image: "{{ .Values.app.ui.image.repository }}:{{ .Values.app.ui.image.tag }}"
+          resources:
+            limits:
+              cpu: "{{ .Values.app.ui.resources.cpu }}"
+              memory: "{{ .Values.app.ui.resources.memory }}"
+            requests:
+              cpu: "{{ .Values.app.ui.resources.cpu }}"
+              memory: "{{ .Values.app.ui.resources.memory }}"
+          ports:
+            - containerPort: {{ .Values.app.ui.port }}
+              protocol: "TCP"
+          env:
+      restartPolicy: "Always"
+      
+
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  namespace: "{{ .Release.Namespace }}"
+  name: {{ include "fairy-music.name" . }}-ui-service
+  labels:
+{{ include "fairy-music.labels" .  | indent 4 }}
+spec:
+  type: "ClusterIP"
+  ports:
+    - protocol: "TCP"
+      port: {{ .Values.app.ui.port }}
+      targetPort: {{ .Values.app.ui.port }}
+  selector:
+{{ include "fairy-music-ui.selectorLabels" .  | indent 4 }}
+  sessionAffinity: ClientIP
