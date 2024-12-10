@@ -7,7 +7,7 @@ COPY --from=ubuntu/jre:17_edge /opt/java /opt/java
 WORKDIR /opt/app
 
 COPY internal/target/fairy-music.jar /opt/app/app.jar
-COPY ci-cd/docker/service/app.sh /opt/app/app.sh
+COPY ci-cd/docker/api/app.sh /opt/app/app.sh
 
 ENV JAVA_HOME=/opt/java
 

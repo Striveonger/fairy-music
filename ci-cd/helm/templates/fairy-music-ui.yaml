@@ -34,7 +34,6 @@ spec:
               protocol: "TCP"
           env:
       restartPolicy: "Always"
-      
 
 ---
 apiVersion: "v1"
@@ -53,3 +52,24 @@ spec:
   selector:
 {{ include "fairy-music-ui.selectorLabels" .  | indent 4 }}
   sessionAffinity: ClientIP
+
+---
+apiVersion: "networking.k8s.io/v1"
+kind: "Ingress"
+metadata:
+  namespace: "{{ .Release.Namespace }}"
+  name: {{ include "fairy-music.name" . }}-ui-ingress
+  labels:
+{{ include "fairy-music.labels" .  | indent 4 }}
+spec:
+  rules:
+    - host: "{{ .Values.app.ui.host }}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "fairy-music.name" . }}-ui-service
+                port:
+                  number: {{ .Values.app.ui.port }}

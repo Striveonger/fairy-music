@@ -22,16 +22,17 @@ pnpm -C website run build
 # --------------------------------------------------------------------------------------------
 # uninstall helm
 helm uninstall fairy-music -n fm
+# kubectl delete ns fm
 # remove image
-docker rmi striveonger/fairy-music-app:1.0.0
+docker rmi striveonger/fairy-music-api:1.0.0
 docker rmi striveonger/fairy-music-ui:1.0.0
 
 # --------------------------------------------------------------------------------------------
 # build image
-docker build -f ./ci-cd/docker/service/Dockerfile -t striveonger/fairy-music-app:1.0.0 .
+docker build -f ./ci-cd/docker/api/Dockerfile -t striveonger/fairy-music-api:1.0.0 .
 docker build -f ./ci-cd/docker/ui/Dockerfile -t striveonger/fairy-music-ui:1.0.0 .
 
-# docker push striveonger/fairy-music-app:1.0.0
+# docker push striveonger/fairy-music-api:1.0.0
 # docker push striveonger/fairy-music-ui:1.0.0
 
 # package helm
