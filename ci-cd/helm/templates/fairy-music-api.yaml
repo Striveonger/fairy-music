@@ -14,13 +14,13 @@ spec:
   template:
     metadata:
       namespace: "{{ .Release.Namespace }}"
-      name:  {{ include "fairy-music.name" . }}
+      name:  {{ include "fairy-music.name" . }}-api
       labels:
 {{ include "fairy-music-api.selectorLabels" .  | indent 8 }}
 {{ include "fairy-music.labels" .  | indent 8 }}
     spec:
       containers:
-        - name:  {{ include "fairy-music.name" . }}
+        - name:  {{ include "fairy-music.name" . }}-api
           image: "{{ .Values.app.api.image.repository }}:{{ .Values.app.api.image.tag }}"
           resources:
             limits:
