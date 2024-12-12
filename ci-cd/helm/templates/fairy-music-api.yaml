@@ -58,6 +58,7 @@ spec:
     - protocol: "TCP"
       port: {{ .Values.app.api.port }}
       targetPort: {{ .Values.app.api.port }}
+  sessionAffinity: "ClientIP"
   selector:
 {{ include "fairy-music-api.selectorLabels" .  | indent 4 }}
-  sessionAffinity: ClientIP
+

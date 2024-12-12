@@ -32,7 +32,7 @@ spec:
           ports:
             - containerPort: {{ .Values.app.ui.port }}
               protocol: "TCP"
-          env:
+          env: []
       restartPolicy: "Always"
 
 ---
@@ -46,30 +46,13 @@ metadata:
 spec:
   type: "ClusterIP"
   ports:
-    - protocol: "TCP"
+    - name: "http"
+      protocol: "TCP"
       port: {{ .Values.app.ui.port }}
       targetPort: {{ .Values.app.ui.port }}
+  sessionAffinity: "ClientIP"
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 3600
   selector:
 {{ include "fairy-music-ui.selectorLabels" .  | indent 4 }}
-  sessionAffinity: ClientIP
-
----
-apiVersion: "networking.k8s.io/v1"
-kind: "Ingress"
-metadata:
-  namespace: "{{ .Release.Namespace }}"
-  name: {{ include "fairy-music.name" . }}-ui-ingress
-  labels:
-{{ include "fairy-music.labels" .  | indent 4 }}
-spec:
-  rules:
-    - host: "{{ .Values.app.ui.host }}"
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: {{ include "fairy-music.name" . }}-ui-service
-                port:
-                  number: {{ .Values.app.ui.port }}
