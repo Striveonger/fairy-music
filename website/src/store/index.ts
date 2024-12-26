@@ -20,7 +20,7 @@ export const usePlayListStore = defineStore('playliststore', () => {
             return "";
         } else {
             let x = list.value[currentIndex.value] as BilibiliPlay;
-            return `/api/v1/fairy/music/play?type=${x.type}&bvid=${x.bvid}&aid=${x.aid}&cid=${x.cid}`;
+            return (import.meta.env.BASE_URL || '') + `api/v1/fairy/music/play?type=${x.type}&bvid=${x.bvid}&aid=${x.aid}&cid=${x.cid}`;
         }
     });
 

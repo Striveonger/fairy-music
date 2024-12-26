@@ -19,6 +19,9 @@ app:
       memory: "256Mi"
     port: 80
     host: "music.striveonger.com"
+  ingress:
+    enabled: true
+    path: /fm
 
 env:
   - name: LOG_LEVEL

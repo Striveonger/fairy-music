@@ -13,6 +13,7 @@ export default defineConfig({
             }
         }
     },
+    base: '/fm/',
     resolve: {
         alias: {
             '@': path.resolve(__dirname, './src'),
@@ -20,23 +21,15 @@ export default defineConfig({
     },
     server: {
         open: false,
-        port: 2222,
+        port: 5023,
         // https: false,
         host: "0.0.0.0",
         proxy: {
-            "/api/v1": {
-                // target: 'http://127.0.0.1:18081',
-                target: 'http://49.232.193.134/',
+            "/fm/api/v1": {
+                target: 'http://127.0.0.1:18081',
                 changeOrigin: true,
                 // secure: false,
-                // rewrite: (path: any) => path.replace(/^\/fm/, '')
-            },
-            "/prom": {
-                // target: 'http://127.0.0.1:18081',
-                target: 'http://10.13.144.116:9090/',
-                changeOrigin: true,
-                // secure: false,
-                rewrite: (path: any) => path.replace(/^\/prom/, '')
+                rewrite: (path: any) => path.replace(/^\/fm/, '')
             }
         }
     }

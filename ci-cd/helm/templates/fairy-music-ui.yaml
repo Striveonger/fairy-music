@@ -56,3 +56,26 @@ spec:
       timeoutSeconds: 3600
   selector:
 {{ include "fairy-music-ui.selectorLabels" .  | indent 4 }}
+
+---
+{{- if .Values.app.ingress.enabled -}}
+apiVersion: "networking.k8s.io/v1"
+kind: "Ingress"
+metadata:
+  namespace: "{{ .Release.Namespace }}"
+  name: {{ include "fairy-music.name" . }}-ingress
+  labels:
+{{ include "fairy-music.labels" .  | indent 4 }}
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - http:
+        paths:
+          - path: {{ .Values.app.ingress.path }}
+            pathType: "Prefix"
+            backend:
+              service:
+                name: {{ include "fairy-music.name" . }}-ui-service
+                port:
+                  number: {{ .Values.app.ui.port }}
+{{- end -}}

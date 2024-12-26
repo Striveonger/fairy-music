@@ -69,7 +69,7 @@ const searchMusic = async (val) => {
 
 const coverProxy = (song: SearchItem) => {
     // console.log('song :>> ', song);
-    return "/api/v1/fairy/music/cover?url=" + song.cover;
+    return (import.meta.env.BASE_URL || '') + "api/v1/fairy/music/cover?url=" + song.cover;
 }
 
 const playSong = (song: SearchItem) => {
@@ -80,7 +80,7 @@ const playSong = (song: SearchItem) => {
 };
 
 onMounted(() => {
-    searchMusic("8090");
+    searchMusic("8090 分P");
 });
 </script>
 

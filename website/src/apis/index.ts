@@ -16,7 +16,7 @@ export interface Result<T> {
 
 export const http = axios.create({
     // baseURL: process.env.BASE_URL || '',
-    // baseURL: import.meta.env.BASE_URL || '',
+    baseURL: import.meta.env.BASE_URL || '',
     headers: {},
     timeout: 1000 * 5, // 5s
 });

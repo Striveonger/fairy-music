@@ -3,7 +3,7 @@ import { createWebHistory, createRouter } from 'vue-router';
 import SearchMusic from '@/views/SearchMusic.vue';
 // import PlayMusic from '@/views/PlayMusic.vue';
 
-const routes = [
+const routes:any = [
     {
         path: '/',
         name: 'search',
@@ -17,9 +17,8 @@ const routes = [
 ];
 
 const router = createRouter({
-    // history: createMemoryHistory(),
-    history: createWebHistory(),
-    routes,
+    history: createWebHistory(import.meta.env.BASE_URL),
+    routes
 });
 
 export default router;

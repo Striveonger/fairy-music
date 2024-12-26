@@ -116,7 +116,7 @@ watch(() => store.currentTitle, (title) => document.title = title);
 
         .play-progress {
             height: 10%;
-            background: linear-gradient(to bottom right, rgb(246, 43, 43), rgb(239, 195, 63), rgb(84, 154, 84), rgb(33, 151, 219), rgb(182, 135, 213), rgb(240, 167, 240));
+            background: linear-gradient(to bottom, rgb(222, 131, 131), rgb(255, 191, 0), rgb(240, 207, 110), rgb(84, 154, 84), rgb(155, 165, 172), rgb(84, 154, 84), rgb(33, 151, 219), rgb(182, 135, 213), rgb(172, 90, 172));
             z-index: 2001;
         }
     }
