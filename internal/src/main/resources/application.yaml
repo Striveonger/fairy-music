@@ -27,7 +27,7 @@ logging:
   level:
     root: info
   file:
-    path: "logs"
+    path: logs
 
 
 sa-token:

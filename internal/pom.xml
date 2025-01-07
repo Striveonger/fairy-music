@@ -26,12 +26,17 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-        <own.version>1.0.0</own.version>
+        
         <jsoup.version>1.17.2</jsoup.version>
     </properties>
 
     <dependencies>
+        <!-- Jsoup -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>com.striveonger.common</groupId>
@@ -42,13 +47,6 @@
             <groupId>com.striveonger.common</groupId>
             <artifactId>own-test</artifactId>
             <scope>test</scope>
-        </dependency>
-
-        <!-- Jsoup -->
-        <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>${jsoup.version}</version>
         </dependency>
 
     </dependencies>
