@@ -18,7 +18,7 @@ export const http = axios.create({
     // baseURL: process.env.BASE_URL || '',
     baseURL: import.meta.env.BASE_URL || '',
     headers: {},
-    timeout: 1000 * 5, // 5s
+    timeout: 1000 * 10, // 5s
 });
 
 // TODO: 可以配置 拦截器, 错误处理等...后面再说呗~

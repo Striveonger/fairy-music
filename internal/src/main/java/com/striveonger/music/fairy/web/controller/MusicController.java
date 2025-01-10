@@ -40,14 +40,6 @@ public class MusicController {
         return Result.success().data(music.search(keyword, page));
     }
 
-    @GetMapping("/v1/fairy/music/cover")
-    public void cover(String url, HttpServletRequest request, HttpServletResponse response) {
-        try (HttpResponse result = HttpRequest.get(url).execute()){
-            byte[] bytes = result.bodyBytes();
-            preview("xx.jpg", request, response, bytes);
-        }
-    }
-
     @GetMapping("/v1/fairy/music/playlist")
     public Result playlist(String url) {
         log.info("playlist: {}", url);

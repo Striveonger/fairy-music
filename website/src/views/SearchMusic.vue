@@ -21,7 +21,7 @@
                 <template v-for="(song, index) in playlist" :key="index">
                     <li @click="playSong(song)" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
                         aria-controls="offcanvasRight">
-                        <img :src="coverProxy(song)" :title="song.title" />
+                        <img :src="song.cover" :title="song.title" />
                         <span>{{ song.title }}</span>
                     </li>
                 </template>
@@ -67,10 +67,6 @@ const searchMusic = async (val) => {
     }
 };
 
-const coverProxy = (song: SearchItem) => {
-    // console.log('song :>> ', song);
-    return (import.meta.env.BASE_URL || '') + "api/v1/fairy/music/cover?url=" + song.cover;
-}
 
 const playSong = (song: SearchItem) => {
     console.log(`正在跳转到播放页面，歌曲信息:`, song);
