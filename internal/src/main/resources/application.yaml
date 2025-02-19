@@ -7,17 +7,16 @@ server:
 spring:
   application:
     name: 'fairy-music'
-
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: "jdbc:mysql://10.13.144.102:3306/fairy_music"
-    username: "root"
-    password: "root"
-    hikari:
-      minimum-idle: 1
-      maximum-pool-size: 5
-      max-lifetime: 1800000
-      idle-timeout: 600000
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: "jdbc:mysql://10.13.144.102:3306/fairy_music"
+#    username: "root"
+#    password: "root"
+#    hikari:
+#      minimum-idle: 1
+#      maximum-pool-size: 5
+#      max-lifetime: 1800000
+#      idle-timeout: 600000
   servlet:
     multipart:
       max-file-size: 100MB
@@ -29,6 +28,16 @@ logging:
   file:
     path: logs
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, metrics, prometheus
+  endpoint:
+    health:
+      # 开启 /actuator/health/liveness 和 /actuator/health/readiness 探针
+      probes:
+        enabled: true
 
 sa-token:
   # token 名称（同时也是 cookie 名称）

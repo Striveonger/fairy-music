@@ -3,7 +3,6 @@
     <div class="banner">
         <span class="logo">
             <img width="40" height="32" src="/logo.svg" alt="Logo" />
-            <h3>&nbsp;Fairy Music</h3>
         </span>
 
         <div class="search" role="search">
@@ -87,6 +86,13 @@ onMounted(() => {
 }
 
 .playlist {
+    // 设置容器宽度并居中
+    // width: 95%;
+    // margin: 0 auto;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+
     ul {
         list-style-type: none;
         padding: 0;
@@ -103,11 +109,13 @@ onMounted(() => {
             flex-direction: column;
             /* margin: 10px; */
             cursor: pointer;
-            // width: max(min(200px, 35%), 20%);
+            // 我想获取屏幕的最大宽度
+            // width: 230px;
             width: min(max(200px, 17%), 50%);
             /* height: calc(max(200px, 24%)* 0.6); */
-            flex: 1 0 auto;
+            // flex: 1 0 auto;
             align-items: center;
+            
 
             img {
                 width: 100%;
@@ -146,6 +154,7 @@ onMounted(() => {
     .logo {
         display: flex;
         align-items: center;
+        margin-left: 8px;
     }
 
     .search {
@@ -162,23 +171,12 @@ onMounted(() => {
     padding-top: 50px;
 }
 
-.logo {
-    h3 {
-        display: none;
-    }
-}
-
 @media (min-width: 600px) and (max-width: 959px) {
     .offcanvas {
         width: 70%; // 平板竖屏时，占屏幕宽度的70%
     }
     .search {
-        padding-right: 40px;
-    }
-    .logo {
-        h3 {
-            display: inline-flex;
-        }
+        padding-right: 60px;
     }
 }
 
@@ -187,12 +185,7 @@ onMounted(() => {
         width: 60%; // 平板横屏或电脑时，占屏幕宽度的60%
     }
     .search {
-        padding-right: 40px;
-    }
-    .logo {
-        h3 {
-            display: inline-flex;
-        }
+        padding-right: 60px;
     }
 }
 
@@ -201,12 +194,7 @@ onMounted(() => {
         width: 40%; // 电脑时，占屏幕宽度的40%
     }
     .search {
-        padding-right: 40px;
-    }
-    .logo {
-        h3 {
-            display: inline-flex;
-        }
+        padding-right: 60px;
     }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <audio id="audio" :src="store.currentPlayURL" autoplay :loop="isLoop"></audio>
+    <audio :ref="audio" :src="store.currentPlayURL" autoplay :loop="isLoop"></audio>
     <div class="controls">
         <!-- 
         <audio autoplay loop>
@@ -27,7 +27,7 @@ const store = usePlayListStore();
 const isPlaying = ref(true);
 const isLoop = ref(false);
 const percentage = ref(0);
-let audio = null;
+const audio = ref();
 
 const palyProgress = computed(() => {
     return "width:"+ percentage.value +"%;"
@@ -36,20 +36,19 @@ const palyProgress = computed(() => {
 const onPlayOrPause = () => {
     isPlaying.value = !isPlaying.value;
     if (isPlaying.value) {
-        audio.play();
+        audio.value.play();
     } else {
-        audio.pause();
+        audio.value.pause();
     }
 }
 
 onMounted(() => {
     // 绑定播放和暂停事件 & 进度条
-    audio = document.getElementById("audio");
-    audio.addEventListener("play", () => isPlaying.value = true);
-    audio.addEventListener("pause", () => isPlaying.value = false);
-    audio.addEventListener("timeupdate", () => {
-        percentage.value = audio.currentTime / audio.duration * 100
-        if(!isLoop.value && audio.currentTime == audio.duration) {
+    audio.value.addEventListener("play", () => isPlaying.value = true);
+    audio.value.addEventListener("pause", () => isPlaying.value = false);
+    audio.value.addEventListener("timeupdate", () => {
+        percentage.value = audio.value.currentTime / audio.value.duration * 100
+        if(!isLoop.value && audio.value.currentTime == audio.value.duration) {
             store.next();
         }
     });
