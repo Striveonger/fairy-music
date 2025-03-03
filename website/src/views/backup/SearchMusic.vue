@@ -37,7 +37,7 @@
 import { onMounted, ref } from 'vue';
 import { search } from '@/apis/Music'
 import { SearchItem } from '@/types';
-import PlayList from '@/views/PlayList.vue';
+import PlayList from '@/views/backup/PlayList.vue';
 import PlayMusic from './PlayMusic.vue';
 
 import { usePlayListStore} from '@/store';

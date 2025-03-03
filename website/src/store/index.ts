@@ -1,7 +1,6 @@
 import { computed, ref } from "vue"
 import { defineStore } from "pinia";
 import { Play, BilibiliPlay } from "@/types";
-import { publicDecrypt } from "crypto";
 
 export const usePlayListStore = defineStore('playliststore', () => {
     const list = ref<Play[]>([]);

@@ -12,9 +12,15 @@
             <div class="play-progress" :style="palyProgress"></div>
             <div class="buttons">
                 <!-- 控制器 -->
+                <i class="bi bi-repeat"></i>
+                <i class="bi bi-repeat-1"></i>
+                <i class="bi bi-shuffle"></i>
                 <i class="bi bi-skip-start-fill" @click="store.prev"></i>
                 <i class="bi" :class="isPlaying ? 'bi-pause-fill' : 'bi-play-fill'" @click="onPlayOrPause"></i>
                 <i class="bi bi-skip-end-fill" @click="store.next"></i>
+                <i class="bi bi-music-note-list"></i>
+                <i class="bi bi-cursor-fill"></i>
+                
             </div>
         </div>
     </div>

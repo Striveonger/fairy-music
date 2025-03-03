@@ -1,5 +1,6 @@
 package com.striveonger.music.fairy.sources.bilibili;
 
+import com.striveonger.common.core.MarkGenerate;
 import com.striveonger.music.fairy.sources.api.Play;
 
 /**
@@ -55,5 +56,10 @@ public class BilibiliPlay extends Play {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    @Override
+    public String key() {
+        return MarkGenerate.build(type, bvid, aid, cid);
     }
 }
