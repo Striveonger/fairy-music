@@ -2,117 +2,172 @@ import { computed, ref } from "vue"
 import { defineStore } from "pinia";
 import { LinkNode, PlayModeEnum, Play, BilibiliPlay } from "@/types";
 
-export const usePlayListStore = defineStore('playliststore', () => {
-    const list = ref<Play[]>([]);
-    const url = ref("");
-    const currentIndex = ref(-1);
-    const currentTitle = computed(() => {
-        if (currentIndex.value < 0 || currentIndex.value >= list.value.length) {
-            return "";
-        } else {
-            return list.value[currentIndex.value].title;
-        }
-    });
-    const currentPlayURL = computed(() => {
-        console.log('currentIndex :>> ', currentIndex);
-        if (currentIndex.value < 0 || currentIndex.value >= list.value.length) {
-            return "";
-        } else {
-            let x = list.value[currentIndex.value] as BilibiliPlay;
-            return (import.meta.env.BASE_URL || '') + `api/v1/fairy/music/play?type=${x.type}&bvid=${x.bvid}&aid=${x.aid}&cid=${x.cid}`;
-        }
-    });
-
-    const next = () => {
-        currentIndex.value++;
-        if (currentIndex.value >= list.value.length) {
-            currentIndex.value = 0;
-        }
-    }
-
-    const prev = () => {
-        currentIndex.value--;
-        if (currentIndex.value <= 0) {
-            currentIndex.value = list.value.length - 1;
-        }
-    }
-
-    return { list, url, currentIndex, currentTitle, currentPlayURL, next, prev };
-});
-
 /**
  * 播放控制
  */
 export const playControls = defineStore('playControls', () => {
-    const mode = ref(new LinkNode(PlayModeEnum.Order));
-    mode.value.next = new LinkNode(PlayModeEnum.Random).next = new LinkNode(PlayModeEnum.Single).next = mode.value;
+    /**
+     * 播放模式
+     */
+    const orderMode = new LinkNode(PlayModeEnum.Order);
+    const randomMode = new LinkNode(PlayModeEnum.Random);
+    const singleMode = new LinkNode(PlayModeEnum.Single);
+    orderMode.next = randomMode;
+    randomMode.next = singleMode;
+    singleMode.next = orderMode;
+    const mode = ref(orderMode);
 
-    const list = ref<Array<Play>>([]);
+    let list: Array<string> = [];
+    let map: Record<string, Play> = {};
 
-    const index = ref(-1);
+
+    let index = -1;
+    const playKey = ref<string>("");
+    const isPlaying = ref<boolean>(false);
+
     const title = computed(() => {
-        if (index.value < 0 || index.value >= list.value.length) {
-            return "Fairy Music";
+        let x = map[playKey.value] as BilibiliPlay;
+        if (x) {
+            return x.title;
         } else {
-            return list.value[index.value].title;
+            return "Fairy Music";
         }
     });
+
     const url = computed(() => {
-        if (index.value < 0 || index.value >= list.value.length) {
-            return "";
-        } else {
-            let x = list.value[index.value] as BilibiliPlay;
+        let x = map[playKey.value] as BilibiliPlay;
+        if (x) {
+            // isPlaying.value = true;
             return (import.meta.env.BASE_URL || '') + `api/v1/fairy/music/play?type=${x.type}&bvid=${x.bvid}&aid=${x.aid}&cid=${x.cid}`;
+        } else {
+            return "";
         }
     });
     const loop = computed(() => {
         return mode.value.value === PlayModeEnum.Single;
     });
 
-    const getMode = () => {
-        return mode.value;
-    }
-
-    const changeMode = () => {
-        mode.value.value = mode.value.next;
-    }
-
     const prev = () => {
-        index.value--;
-        if (index.value <= 0) {
-            index.value = list.value.length - 1;
+        if (mode.value.value === PlayModeEnum.Random) {
+            random();
+        } else {
+            index--;
+            if (index <= 0) {
+                index = list.length - 1;
+            }
+            playKey.value = list[index];
         }
     };
 
     const next = () => {
-        index.value++;
-        if (index.value >= list.value.length) {
-            index.value = 0;
+        if (mode.value.value === PlayModeEnum.Random) {
+            random();
+        } else {
+            index++;
+            if (index >= list.length) {
+                index = 0;
+            }
+            playKey.value = list[index];
         }
     };
 
     const random = () => {
-        index.value = Math.floor(Math.random() * list.value.length);
-    };
-
-    const play = (i: number) => {
-        index.value = i;
-    };
-
-    const push = (item: Play) => {
-        list.value.push(item);
-        // TODO: 临时设置为最后一个, 方便播放
-        // TODO: 播放列表
-        index.value = list.value.length - 1;
-    };
-
-    const remove = (index: number) => {
-        list.value.splice(index, 1);
+        let i = Math.floor(Math.random() * list.length);
+        playKey.value = list[i];
     };
 
     const clear = () => {
-        list.value = [];
+        list = [];
+        map = {};
+        index = -1;
+    };
+
+    const remove = (key: string) => {
+        let x = map[key];
+        if (x) {
+            delete map[key];
+            let i = list.indexOf(key);
+            if (i >= 0) {
+                list.splice(i, 1);
+            }
+            if (key === playKey.value) {
+                next();
+            }
+        }
+    };
+
+    // ===================================================================
+
+    let audio = null;
+    const palyProgress = ref<number>(0);
+    const init = (o: any) => {
+        audio = o;
+        audio.value.addEventListener("play", () => isPlaying.value = true);
+        audio.value.addEventListener("pause", () => isPlaying.value = false);
+        audio.value.addEventListener("timeupdate", () => {
+            palyProgress.value = audio.value.currentTime / audio.value.duration * 100
+            if (audio.value.currentTime == audio.value.duration) {
+                next();
+            }
+        });
+    };
+
+    const isPlay = () => {
+        return isPlaying.value;
+    };
+
+    const push = (item: Play) => {
+        let x = map[item.key]
+        if (x) {
+            return;
+        }
+        list.push(item.key);
+        map[item.key] = item;
+    };
+
+    const onPlay = (o: any) => {
+        let key = null;
+        if (typeof o === 'number') {
+            let i = o as number;
+            if (i >= 0 && i < list.length) {
+                key = list[i];
+            }
+        } else if (typeof o === 'string') {
+            key = o as string;
+        }
+        if (key !== null && key !== playKey.value) {
+            playKey.value = key;
+            isPlaying.value = true;
+        }
+    };
+
+    const onPlayOrPause = () => {
+        if (audio && audio.value && playKey.value !== "") {
+            if (audio.value.paused) {
+                audio.value.play();
+                isPlaying.value = true;
+            } else {
+                audio.value.pause();
+                isPlaying.value = false;
+            }
+        }
+    };
+
+    const getMode = () => {
+        return mode.value.value;
     }
 
-    return { title, url, loop, prev, next, random, play, push, remove, clear, getMode, changeMode };
+    const changeMode = () => {
+        mode.value = mode.value.next;
+    }
+
+    const getList = () => {
+        let result: Play[] = [];
+        for (let i = list.length - 1; i >= 0; i--) {
+            result.push(map[list[i]]);
+        }
+        return result;
+    }
+
+    return { title, url, loop, playKey, prev, next, remove, push, init, isPlay, onPlay, onPlayOrPause, getMode, changeMode, getList };
 });

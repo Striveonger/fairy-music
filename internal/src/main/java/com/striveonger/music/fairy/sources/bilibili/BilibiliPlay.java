@@ -59,7 +59,7 @@ public class BilibiliPlay extends Play {
     }
 
     @Override
-    public String key() {
+    public String getKey() {
         return MarkGenerate.build(type, bvid, aid, cid);
     }
 }

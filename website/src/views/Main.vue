@@ -2,7 +2,6 @@
     <div class="app">
         <div class="head-container">
             <span class="logo">
-                <!-- 我这怎么获取 import.meta.env.BASE_URL 呢? -->
                 <a :href="baseUrl"><img width="40" height="32" src="/logo.svg" alt="Logo" /></a>
             </span>
 
@@ -12,14 +11,13 @@
             </div>
         </div>
         <div class="main-container">
-
             <div v-if="loading" class="loading">
                 <div class="spinner-grow spinner-grow-sm" role="status">
                     <span class="visually-hidden">Loading...</span>
                 </div>
             </div>
 
-            <div class="playlist-container" ref="palyContainer" v-show="!isShowSongContainer || windowWidth > 600">
+            <div class="playlist-container" ref="palyContainer" v-show="!loading && (!isShowSongContainer || windowWidth > 600)">
                 <div class="playlist-item" :data-key="index" v-for="(item, index) in playlist" :key="index"
                     @click="playlistClick(item, index, $event)">
                     <img :src="item.cover" :title="item.title" />
@@ -27,36 +25,43 @@
                 </div>
             </div>
 
-            <Transition name="fade-slide">
-                <div class="song-container" v-show="isShowSongContainer" :ref="songContainer">
-                    <div class="song-header">
-                        <span>
-                            播放列表
-                        </span>
-
-                    </div>
-                    <div class="song-container-close" v-if="isShowSongContainer && windowWidth <= 600"
-                        @click="closeSongContainer()">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-chevron-compact-right"
-                            viewBox="0 0 16 16">
-                            <path fill-rule="evenodd"
-                                d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671" />
-                        </svg>
-                    </div>
-                    <div v-if="isShowSongContainer && !isLoadFinish" class="loading">
-                        <div class="spinner-grow spinner-grow-sm" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                    </div>
-
-                    <SongList :list="list" v-if="isShowSongContainer && isLoadFinish" />
+            <div class="song-container" v-show="isShowSongContainer" :ref="songContainer">
+                <div class="song-container-close" v-if="isShowSongContainer && windowWidth <= 600" @click="closeSongContainer()">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-chevron-compact-right"
+                        viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671" />
+                    </svg>
                 </div>
-            </Transition>
+
+                <div v-if="isShowSongContainer && !isLoadFinish" class="loading">
+                    <div class="spinner-grow spinner-grow-sm" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+
+                <SongList :list="list" :since="since"  v-if="isShowSongContainer && isLoadFinish" />
+            </div>
 
             <div class="controls">
-                <audio ref="audio" autoplay :loop="controls.loop" :src="controls.url" ></audio>
+                <audio ref="audio" autoplay :loop="controls.loop" :src="controls.url"></audio>
                 <div class="controls-container">
-                    x, y, z
+
+                    <i class="bi foo" :class="controls.getMode()" @click="controls.changeMode()"></i>
+                
+                    <i class="bi foo bi-skip-start-fill" @click="controls.prev()"></i>
+                    <i class="bi" :class="controls.isPlay() ? 'bi-pause-fill' : 'bi-play-fill'" @click="controls.onPlayOrPause()" ></i>
+                    <i class="bi foo bi-skip-end-fill" @click="controls.next()"></i>
+                    <i class="bi foo bi-music-note-list" @click="sincePlayList()"></i>
+                    <!-- 
+                    <i class="bi bi-cursor-fill"></i>
+                    <i class="bi bi-volume-up"></i>
+                    <i class="bi bi-volume-mute"></i>
+                    <i class="bi bi-volume-down"></i>
+                    <i class="bi bi-volume-off"></i>
+                    <i class="bi bi-volume-high"></i>
+                    <i class="bi bi-volume-low"></i>
+                    -->
                 </div>
             </div>
         </div>
@@ -84,9 +89,13 @@ const windowWidth = ref(window.innerWidth);
 const searchQuery = ref('');
 const loading = ref(false);
 const playlist = ref<Array<SearchItem>>([]);
+
+const since = ref<boolean>(false);
 const list = ref<Array<Play>>([]);
 
+
 const controls = playControls();
+const audio = ref(null);
 
 let currentUrl = "";
 
@@ -97,6 +106,8 @@ const init = async () => {
     // 初始化逻辑
     searchMusic("8090");
     window.addEventListener('resize', handleResize);
+    controls.init(audio);
+    document.title = controls.title;
 };
 
 onMounted(init);
@@ -111,6 +122,7 @@ const playlistClick = (item: SearchItem, index: number, event: any) => {
         closeSongContainer();
         return;
     }
+    since.value = false;
     isLoadFinish.value = false;
     currentUrl = item.url;
     nextTick(async () => {
@@ -143,10 +155,23 @@ const searchMusic = async (val: string) => {
 const closeSongContainer = () => {
     isShowSongContainer.value = false;
     currentUrl = "";
+    since.value = false;
     isLoadFinish.value = false;
     list.value = [];
 }
 
+const sincePlayList = () => {
+    isLoadFinish.value = false;
+    isShowSongContainer.value = true;
+    list.value = [];
+    currentUrl = "";
+    since.value = true;
+    nextTick(() => {
+        let result = controls.getList();
+        list.value = result;
+        isLoadFinish.value = true;
+    });
+}
 </script>
 
 <style scoped lang="scss">
@@ -230,7 +255,7 @@ const closeSongContainer = () => {
 
     animation: bounceInLeft;
     /* referring directly to the animation's @keyframe declaration */
-    animation-duration: 1.3s;
+    animation-duration: 500ms;
     /* don't forget to set a duration! */
 
     .playlist-item {
@@ -260,24 +285,10 @@ const closeSongContainer = () => {
 .song-container {
     width: 400%;
     height: 100%;
-    // padding: 5px;
-    // display: flex;
     overflow-x: auto;
+    padding-top: 15px;
 
     animation: bounceInRight;
-    /* referring directly to the animation's @keyframe declaration */
-    // animation-duration: 1.3s; /* don't forget to set a duration! */
-}
-
-.fade-slide-enter-from,
-.fade-slide-leave-to {
-    opacity: 0;
-    transform: translateX(20px);
-}
-
-.fade-slide-enter-active,
-.fade-slide-leave-active {
-    transition: all 0.2s ease-out;
 }
 
 .song-container-close {
@@ -299,13 +310,6 @@ const closeSongContainer = () => {
         width: 49px;
         height: 100%;
     }
-
-
-    // border-radius: 50%;
-    // display: flex;
-    // align-items: center;
-    // justify-content: center;
-    // box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 // .song-container-close:hover {
@@ -316,4 +320,67 @@ const closeSongContainer = () => {
 
 // .song-container-close:active {
 //     transform: rotate(90deg) scale(0.9);
-// }</style>
+// }
+
+
+.controls {
+    // 边框
+    border: 1px solid #ccc;
+    // 圆角
+    border-radius: 65px;
+    // 阴影
+    box-shadow: 0 0 5px #ccc;
+    // 背景颜色
+    background-color: #fff;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+
+    // 定位
+    position: absolute;
+    z-index: 1000;
+    right: 30px;
+    bottom: 30px;
+    // display: flex;
+    // align-items: center;
+    i {
+        cursor: pointer;
+        // margin: 0 5px;
+        padding-top: 5px;
+        padding-left: 5px;
+        padding-right: 5px;
+        padding-bottom: 5px;
+        font-size: 1.5em;
+    }
+
+    .foo {
+        display: none;
+        // color: #ccc;
+        // opacity: 0;
+        // transform: translateX(20px);
+        // transition: all 0.3s ease-in-out;
+        // display: inline; // 保持元素可交互性
+        // margin-left: -5px; // 修复动画过程中的间距问题
+        // margin-right: -5px; // 修复动画过程中的间距问题
+    }
+}
+
+.controls:hover {
+    .foo {
+        // opacity: 1;
+        // transform: translateX(0);
+        // transition-delay: 0.1s;
+        // display: block; // 竖向排列
+        display: inline;
+
+    }
+    // i {
+    //     background-color: #292929;
+    //     // border-color: #292929;
+    // }
+}
+
+
+
+</style>

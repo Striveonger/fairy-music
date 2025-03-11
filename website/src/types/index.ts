@@ -19,7 +19,8 @@ export interface SearchItem {
 
 export interface Play {
     type: string,
-    title: string
+    title: string,
+    key: string
 }
 
 export interface BilibiliPlay extends Play {
@@ -49,15 +50,15 @@ export enum PlayModeEnum {
     /**
      * 顺序播放
      */
-    Order = "order",
+    Order = "bi-repeat",
     /**
      * 随机播放
      */
-    Random = "random",
+    Random = "bi-shuffle",
     /**
      * 单曲循环
      */
-    Single = "single"
+    Single = "bi-repeat-1"
 }
 
 export enum Constant {

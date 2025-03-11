@@ -18,11 +18,11 @@ public abstract class Play {
         this.type = type;
     }
 
-    public abstract String key();
+    public abstract String getKey();
 
     @Override
     public int hashCode() {
-        return key().hashCode();
+        return getKey().hashCode();
     }
 
     @Override
@@ -34,7 +34,7 @@ public abstract class Play {
             return true;
         }
         if (obj instanceof Play play) {
-            return key().equals(play.key());
+            return getKey().equals(play.getKey());
         }
         return false;
     }
