@@ -3,7 +3,7 @@ apiVersion: "apps/v1"
 kind: "Deployment"
 metadata:
   namespace: "{{ .Release.Namespace }}"
-  name: {{ include "fairy-music.name" . }}-api-deployment
+  name: "{{ include "fairy-music.name" . }}-api-deployment"
   labels:
 {{ include "fairy-music.labels" .  | indent 4 }}
 spec:
@@ -14,13 +14,13 @@ spec:
   template:
     metadata:
       namespace: "{{ .Release.Namespace }}"
-      name:  {{ include "fairy-music.name" . }}-api
+      name: "{{ include "fairy-music.name" . }}-api"
       labels:
 {{ include "fairy-music-api.selectorLabels" .  | indent 8 }}
 {{ include "fairy-music.labels" .  | indent 8 }}
     spec:
       containers:
-        - name:  {{ include "fairy-music.name" . }}-api
+        - name: "{{ include "fairy-music.name" . }}-api"
           image: "{{ .Values.app.api.image.repository }}:{{ .Values.app.api.image.tag }}"
           resources:
             limits:

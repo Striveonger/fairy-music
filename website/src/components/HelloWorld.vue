@@ -21,8 +21,12 @@
 // import { reactive, Ref, ref, toRef, watch, watchEffect } from 'vue';
 
 import {ref, reactive, Ref, toRef} from 'vue';
-
-import { type Car } from '../types';
+interface Car {
+    id: string;
+    name: string;
+    price: number | null;
+    createTime: Date | null;
+}
 
 // 'defineProps' 是一个编译器宏, 不再需要导入
 // import { defineProps } from 'vue';

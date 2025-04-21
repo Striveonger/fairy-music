@@ -49,13 +49,13 @@ public class BiliMusic implements Music<BilibiliPlay> {
         }
         Timepiece timepiece = Timepiece.of("Query Bilibili Music Search");
         String html = HttpUtil.get(url);
-        timepiece.keep("Http Request");
+        timepiece.mark("Http Request");
         Document document = Jsoup.parse(html);
-        timepiece.keep("Html Parse");
+        timepiece.mark("Html Parse");
         Elements elements = document.select("div.video.i_wrapper.search-all-list > div > div");
-        timepiece.keep("Elements Select");
+        timepiece.mark("Elements Select");
         List<SearchItem> list = elements.stream().map(this::convert).filter(Objects::nonNull).toList();
-        timepiece.keep("Convert Result");
+        timepiece.mark("Convert Result");
         timepiece.show();
         log.info("Bilibili Music search result: {}", list);
         return list;
