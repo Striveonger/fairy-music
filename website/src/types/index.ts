@@ -50,15 +50,15 @@ export enum PlayModeEnum {
     /**
      * 顺序播放
      */
-    Order = "bi-repeat",
+    ORDER = "bi-repeat",
     /**
      * 随机播放
      */
-    Random = "bi-shuffle",
+    RANDOM = "bi-shuffle",
     /**
      * 单曲循环
      */
-    Single = "bi-repeat-1"
+    SINGLE = "bi-repeat-1"
 }
 
 export enum Constant {

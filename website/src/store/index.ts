@@ -9,9 +9,9 @@ export const playControls = defineStore('playControls', () => {
     /**
      * 播放模式
      */
-    const orderMode = new LinkNode(PlayModeEnum.Order);
-    const randomMode = new LinkNode(PlayModeEnum.Random);
-    const singleMode = new LinkNode(PlayModeEnum.Single);
+    const orderMode = new LinkNode(PlayModeEnum.ORDER);
+    const randomMode = new LinkNode(PlayModeEnum.RANDOM);
+    const singleMode = new LinkNode(PlayModeEnum.SINGLE);
     orderMode.next = randomMode;
     randomMode.next = singleMode;
     singleMode.next = orderMode;
@@ -44,11 +44,11 @@ export const playControls = defineStore('playControls', () => {
         }
     });
     const loop = computed(() => {
-        return mode.value.value === PlayModeEnum.Single;
+        return mode.value.value === PlayModeEnum.SINGLE;
     });
 
     const prev = () => {
-        if (mode.value.value === PlayModeEnum.Random) {
+        if (mode.value.value === PlayModeEnum.RANDOM) {
             random();
         } else {
             index--;
@@ -60,7 +60,7 @@ export const playControls = defineStore('playControls', () => {
     };
 
     const next = () => {
-        if (mode.value.value === PlayModeEnum.Random) {
+        if (mode.value.value === PlayModeEnum.RANDOM) {
             random();
         } else {
             index++;
