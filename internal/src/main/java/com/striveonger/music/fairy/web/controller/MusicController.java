@@ -1,8 +1,8 @@
 package com.striveonger.music.fairy.web.controller;
 
 import cn.hutool.core.util.StrUtil;
-import com.striveonger.common.core.constant.CommonConstant;
 import com.striveonger.common.core.result.Result;
+import com.striveonger.common.web.WebConstant;
 import com.striveonger.common.web.holder.WebHolder;
 import com.striveonger.music.fairy.sources.api.Music;
 import com.striveonger.music.fairy.sources.bilibili.BiliMusic;
@@ -26,7 +26,7 @@ public class MusicController {
 
     private final Music<BilibiliPlay> music = new BiliMusic();
 
-    @GetMapping(value = CommonConstant.WEB_API_PREFIX + "/v1/fairy/music/search")
+    @GetMapping(value = WebConstant.WEB_API_PREFIX + "/v1/fairy/music/search")
     public Result search(String keyword, Integer page) {
         log.info("search: {}, page: {}", keyword, page);
         page = page == null || page < 1 ? 1 : page;
@@ -36,13 +36,13 @@ public class MusicController {
         return Result.success().data(music.search(keyword, page));
     }
 
-    @GetMapping(value = CommonConstant.WEB_API_PREFIX + "/v1/fairy/music/playlist")
+    @GetMapping(value = WebConstant.WEB_API_PREFIX + "/v1/fairy/music/playlist")
     public Result playlist(String url) {
         log.info("playlist: {}", url);
         return Result.success().data(music.playlist(url));
     }
 
-    @GetMapping(value = CommonConstant.WEB_API_PREFIX + "/v1/fairy/music/play")
+    @GetMapping(value = WebConstant.WEB_API_PREFIX + "/v1/fairy/music/play")
     public void play(BilibiliPlay play) {
         byte[] bytes = music.play(play);
         WebHolder.preview("xx.mp3", bytes);
