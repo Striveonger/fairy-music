@@ -1,23 +1,19 @@
 package com.striveonger.music.fairy.web.controller;
 
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.http.HttpRequest;
-import cn.hutool.http.HttpResponse;
+import com.striveonger.common.core.constant.CommonConstant;
 import com.striveonger.common.core.result.Result;
+import com.striveonger.common.web.holder.WebHolder;
 import com.striveonger.music.fairy.sources.api.Music;
 import com.striveonger.music.fairy.sources.bilibili.BiliMusic;
 import com.striveonger.music.fairy.sources.bilibili.BilibiliPlay;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
-import static com.striveonger.common.web.ResponseStreamKit.preview;
 
 /**
  * @author Mr.Lee
@@ -30,7 +26,7 @@ public class MusicController {
 
     private final Music<BilibiliPlay> music = new BiliMusic();
 
-    @GetMapping("/v1/fairy/music/search")
+    @GetMapping(value = CommonConstant.WEB_API_PREFIX + "/v1/fairy/music/search")
     public Result search(String keyword, Integer page) {
         log.info("search: {}, page: {}", keyword, page);
         page = page == null || page < 1 ? 1 : page;
@@ -40,15 +36,15 @@ public class MusicController {
         return Result.success().data(music.search(keyword, page));
     }
 
-    @GetMapping("/v1/fairy/music/playlist")
+    @GetMapping(value = CommonConstant.WEB_API_PREFIX + "/v1/fairy/music/playlist")
     public Result playlist(String url) {
         log.info("playlist: {}", url);
         return Result.success().data(music.playlist(url));
     }
 
-    @GetMapping("/v1/fairy/music/play")
-    public void play(BilibiliPlay play, HttpServletRequest request, HttpServletResponse response) {
+    @GetMapping(value = CommonConstant.WEB_API_PREFIX + "/v1/fairy/music/play")
+    public void play(BilibiliPlay play) {
         byte[] bytes = music.play(play);
-        preview("xx.mp3", request, response, bytes);
+        WebHolder.preview("xx.mp3", bytes);
     }
 }

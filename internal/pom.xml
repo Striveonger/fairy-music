@@ -6,8 +6,8 @@
 
     <parent>
         <groupId>com.striveonger.common</groupId>
-        <artifactId>own-parent</artifactId>
-        <version>0.1.0</version>
+        <artifactId>own-commons</artifactId>
+        <version>0.1.1</version>
         <relativePath />
     </parent>
 
@@ -26,7 +26,6 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        
         <jsoup.version>1.17.2</jsoup.version>
     </properties>
 
@@ -45,6 +44,23 @@
 
         <dependency>
             <groupId>com.striveonger.common</groupId>
+            <artifactId>own-db</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.striveonger.common</groupId>
+            <artifactId>own-storage</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webflux</artifactId>
+            <!--<scope>test</scope>-->
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.striveonger.common</groupId>
             <artifactId>own-test</artifactId>
             <scope>test</scope>
         </dependency>
@@ -53,18 +69,6 @@
             <groupId>com.striveonger.common</groupId>
             <artifactId>own-actuator</artifactId>
             <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.gbasedbt</groupId>
-            <artifactId>jdbc</artifactId>
-            <version>3.5.1.32</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webflux</artifactId>
         </dependency>
 
 
