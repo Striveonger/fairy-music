@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: changelog-root
+      author: Mr.Lee
+      context: dev
+  - include:
+      file: schemas/changelog-alloc.json
+      relativeToChangelogFile: true
+  - include:
+      file: schemas/changelog-user.json
+      relativeToChangelogFile: true

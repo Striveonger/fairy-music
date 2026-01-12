@@ -1,0 +1,87 @@
+{
+    "databaseChangeLog": [
+        {
+            "changeSet": {
+                "id": "create-table-alloc",
+                "author": "Mr.Lee",
+                "context": "dev",
+                "changes": [
+                    {
+                        "createTable": {
+                            "tableName": "t_alloc",
+                            "remarks": "号段分配表",
+                            "columns": [
+                                {
+                                    "column": {
+                                        "name": "tag",
+                                        "type": "VARCHAR(128)",
+                                        "constraints": {
+                                            "nullable": false,
+                                            "primaryKey": true,
+                                            "primaryKeyName": "t_alloc_pk"
+                                        },
+                                        "defaultValue": "",
+                                        "remarks": "号段标签"
+                                    }
+                                },
+                                {
+                                    "column": {
+                                        "name": "max_id",
+                                        "type": "BIGINT",
+                                        "constraints": {
+                                            "nullable": false
+                                        },
+                                        "defaultValueNumeric": 1,
+                                        "remarks": "最大ID"
+                                    }
+                                },
+                                {
+                                    "column": {
+                                        "name": "step",
+                                        "type": "INTEGER",
+                                        "constraints": {
+                                            "nullable": false
+                                        },
+                                        "defaultValueNumeric": 1,
+                                        "remarks": "步长"
+                                    }
+                                },
+                                {
+                                    "column": {
+                                        "name": "description",
+                                        "type": "VARCHAR(256)",
+                                        "remarks": "描述"
+                                    }
+                                },
+                                {
+                                    "column": {
+                                        "name": "create_time",
+                                        "type": "TIMESTAMP",
+                                        "defaultValueComputed": "CURRENT_TIMESTAMP",
+                                        "remarks": "创建时间"
+                                    }
+                                },
+                                {
+                                    "column": {
+                                        "name": "update_time",
+                                        "type": "TIMESTAMP",
+                                        "defaultValueComputed": "CURRENT_TIMESTAMP",
+                                        "remarks": "更新时间"
+                                    }
+                                },
+                                {
+                                    "column": {
+                                        "name": "deleted",
+                                        "type": "SMALLINT",
+                                        "defaultValueNumeric": 0,
+                                        "remarks": "删除标志(0否 1是)"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

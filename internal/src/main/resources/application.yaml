@@ -1,38 +1,45 @@
 server:
   port: 18081
   servlet:
-    context-path: '/'
-
+    context-path: "/"
 
 spring:
   application:
-    name: 'fairy-music'
-#  datasource:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: "jdbc:mysql://10.13.144.102:3306/fairy_music"
-#    username: "root"
-#    password: "root"
-#    hikari:
-#      minimum-idle: 1
-#      maximum-pool-size: 5
-#      max-lifetime: 1800000
-#      idle-timeout: 600000
+    name: "fairy-music"
   servlet:
     multipart:
-      max-file-size: 100MB
-      max-request-size: 100MB
+      max-file-size: "100MB"
+      max-request-size: "100MB"
+  datasource:
+    driver-class-name: "org.postgresql.Driver"
+    url: "jdbc:postgresql://postgresql.infra.svc.cluster.local:5432/fairy_music?currentSchema=public&TimeZone=Asia/Shanghai"
+    username: "postgres"
+    password: "A123456a"
+    hikari:
+      minimum-idle: 1
+      maximum-pool-size: 5
+      max-lifetime: 1800000
+      idle-timeout: 600000
+  liquibase:
+    enabled: true
+    change-log: "classpath:db/changelog/changelog-root.yaml"
+    contexts: "dev"
+    default-schema: "public"
+    liquibase-schema: "liquibase"
+    database-change-log-table: "t_database_changelog"
+    database-change-log-lock-table: "t_database_changelog_lock"
 
 logging:
   level:
     root: info
   file:
-    path: logs
+    path: "logs"
 
 management:
   endpoints:
     web:
       exposure:
-        include: health, metrics, prometheus
+        include: "health, metrics, prometheus"
   endpoint:
     health:
       # 开启 /actuator/health/liveness 和 /actuator/health/readiness 探针
@@ -49,27 +56,26 @@ sa-token:
   # 在多人登录同一账号时，是否共用一个 token （为 true 时所有登录共用一个 token, 为 false 时每次登录新建一个 token）
   is-share: true
   # token 风格（默认可取值：uuid、simple-uuid、random-32、random-64、random-128、tik）
-  token-style: uuid
+  token-style: "uuid"
   # 是否输出操作日志
   is-log: false
 
 own:
   db:
     mapper-scan-base-package:
-      - com.striveonger.music.fairy.mapper
+      - "com.striveonger.music.fairy.mapper"
   storage:
     file:
-      folder: '/Users/striveonger/development/workspace/temp/fairy-music-storage'
+      folder: "/Users/striveonger/development/workspace/temp/fairy-music-storage"
     minio:
-      endpoint: '10.13.144.121'
+      endpoint: "10.13.144.121"
       port: 9000
       secure: false
-      access-key: 'BSIgjjn67zEEAoB5rCGG'
-      secret-key: 'RuIvDSXRgsiMa9vtgDebTP2fq8bPjMCTUhIAcQxR'
-      bucket: 'fairy-music-storage'
+      access-key: "BSIgjjn67zEEAoB5rCGG"
+      secret-key: "RuIvDSXRgsiMa9vtgDebTP2fq8bPjMCTUhIAcQxR"
+      bucket: "fairy-music-storage"
   leaf:
-    worker-id: 2
+    worker-id: 1
   auth:
     whites:
-      - '/api/v1/**'
-      - '/storage/**'
+      - "/storage/**"
