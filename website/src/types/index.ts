@@ -62,5 +62,40 @@ export enum PlayModeEnum {
 }
 
 export enum Constant {
-    CURRENT_PLAY_URL = "current://play.list"
+    CURRENT_PLAY_URL = "current://play.list",
+    TOKEN_KEY = "fm.auth.token",
+    USER_KEY = "fm.auth.user"
+}
+
+/**
+ * 用户登录请求
+ */
+export interface LoginRequest {
+    username: string;
+    password: string;
+}
+
+/**
+ * 用户注册请求
+ */
+export interface RegisterRequest {
+    username: string;
+    password: string;
+    email: string;
+}
+
+/**
+ * 用户信息
+ */
+export interface UserInfo {
+    username: string;
+    email: string;
+}
+
+/**
+ * 认证响应
+ */
+export interface AuthResponse {
+    token: string;
+    user: UserInfo;
 }

@@ -1,0 +1,1 @@
+INSERT INTO t_alloc (tag, max_id, step, description, create_time, update_time, deleted) VALUES ('DEFAULT_TAG', 1, 1, '默认的标记数据', '2026-01-13 20:24:30.000000', '2026-01-13 20:24:35.000000', 0);

@@ -28,6 +28,8 @@ spring:
     liquibase-schema: "liquibase"
     database-change-log-table: "t_database_changelog"
     database-change-log-lock-table: "t_database_changelog_lock"
+    # 是否在每次启动时删除所有数据库表
+    drop-first: true
 
 logging:
   level:

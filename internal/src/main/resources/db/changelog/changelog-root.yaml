@@ -4,8 +4,11 @@ databaseChangeLog:
       author: Mr.Lee
       context: dev
   - include:
-      file: schemas/changelog-alloc.json
+      file: schema/changelog-alloc.json
       relativeToChangelogFile: true
   - include:
-      file: schemas/changelog-user.json
+      file: schema/changelog-user.json
+      relativeToChangelogFile: true
+  - include:
+      file: data/changelog-alloc.sql
       relativeToChangelogFile: true

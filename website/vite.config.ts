@@ -23,11 +23,11 @@ export default defineConfig({
         open: false,
         port: 5023,
         // https: false,
-        host: "0.0.0.0",
+        host: "127.0.0.1",
         proxy: {
             "/fm/api/v1": {
-                // target: 'http://127.0.0.1:18081',
-                target: 'http://127.0.0.1/',
+                target: 'http://127.0.0.1:18081',
+                // target: 'http://127.0.0.1/',
                 changeOrigin: true,
                 // secure: false,
                 // rewrite: (path: any) => path.replace(/^\/fm/, '')
