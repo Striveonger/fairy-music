@@ -98,7 +98,7 @@ public class BiliMusicApplicationTests {
         Timepiece timepiece = Timepiece.of("SearchMusic");
         Music music = new BiliMusic();
         List<SearchItem> list = music.search(keyword, page);
-        System.out.println(Jackson.toJSONString(list));
+        System.out.println(Jackson.toString(list));
         timepiece.show();
     }
 
@@ -130,7 +130,7 @@ public class BiliMusicApplicationTests {
         String url = "https://www.bilibili.com/video/BV1Mh4y1c7RY/";  // 订阅
         BiliMusic music = new BiliMusic();
         List<BilibiliPlay> list = music.playlist(url);
-        System.out.println(Jackson.toJSONString(list));
+        System.out.println(Jackson.toString(list));
     }
 
 

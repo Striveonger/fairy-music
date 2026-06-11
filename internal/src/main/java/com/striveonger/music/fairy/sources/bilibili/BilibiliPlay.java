@@ -1,6 +1,6 @@
 package com.striveonger.music.fairy.sources.bilibili;
 
-import com.striveonger.common.core.MarkGenerate;
+import com.striveonger.common.core.KeyGen;
 import com.striveonger.music.fairy.sources.api.Play;
 
 /**
@@ -60,6 +60,6 @@ public class BilibiliPlay extends Play {
 
     @Override
     public String getKey() {
-        return MarkGenerate.build(type, bvid, aid, cid);
+        return KeyGen.build(type, bvid, aid, cid);
     }
 }

@@ -1,15 +1,11 @@
 package com.striveonger.music.fairy.web.controller;
 
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.http.HttpRequest;
-import cn.hutool.http.HttpResponse;
 import com.striveonger.common.core.result.Result;
 import com.striveonger.music.fairy.sources.api.Music;
 import com.striveonger.music.fairy.sources.bilibili.BiliMusic;
 import com.striveonger.music.fairy.sources.bilibili.BilibiliPlay;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static com.striveonger.common.web.ResponseStreamKit.preview;
+import static com.striveonger.common.web.holder.WebHolder.preview;
 
 /**
  * @author Mr.Lee
@@ -47,8 +43,8 @@ public class MusicController {
     }
 
     @GetMapping("/v1/fairy/music/play")
-    public void play(BilibiliPlay play, HttpServletRequest request, HttpServletResponse response) {
+    public void play(BilibiliPlay play) {
         byte[] bytes = music.play(play);
-        preview("xx.mp3", request, response, bytes);
+        preview("xx.mp3", bytes);
     }
 }

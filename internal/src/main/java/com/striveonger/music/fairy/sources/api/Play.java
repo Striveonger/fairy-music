@@ -41,6 +41,6 @@ public abstract class Play {
 
     @Override
     public String toString() {
-        return Jackson.toJSONString(this);
+        return Jackson.toString(this);
     }
 }
